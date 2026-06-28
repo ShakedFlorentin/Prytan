@@ -29,7 +29,7 @@
 </p>
 
 <p align="center">
-Prytan gives your whole team a shared AI council: 9 role-specific agents that route tasks to each other, remember your codebase via a local knowledge graph, surface irreversible decisions to a human, and run autonomously on a cron schedule — all with a hard monthly token budget so you never see a surprise bill. Runs fully local. Zero telemetry. Zero runtime dependencies.
+Prytan gives your whole team a shared AI council: 16 role-specific agents that route tasks to each other, remember your codebase via a local knowledge graph, surface irreversible decisions to a human, and run autonomously on a cron schedule — all with a hard monthly token budget so you never see a surprise bill. Runs fully local. Zero telemetry. Zero runtime dependencies.
 </p>
 
 <p align="center">
@@ -45,22 +45,25 @@ Works on <strong>Claude Code</strong> today. One <code>/init</code> wizard adapt
 ## Quickstart
 
 ```bash
-# 1. Clone
+# Option A — one-liner
+curl -fsSL https://raw.githubusercontent.com/ShakedFlorentin/Prytan/main/install.sh | bash
+
+# Option B — manual
 git clone https://github.com/ShakedFlorentin/Prytan.git && cd Prytan
+./install.sh
+```
 
-# 2. Open Claude Code
+The installer checks prerequisites, runs the setup wizard, and builds the initial knowledge graph. Then:
+
+```bash
+# Open Claude Code and run the agent wizard
 claude
-
-# 3. Run the setup wizard (10 questions → all config files written)
 /init
 
-# 4. Build the knowledge graph
-python3 codegrapher.py scan src
-
-# 5. Install the crontab (daily standups, weekly planning, monthly reviews)
+# Install the crontab (daily standups, weekly planning, monthly reviews)
 crontab scripts/org.crontab
 
-# 6. Optional: start the Telegram bot
+# Optional: start the Telegram bot
 python3 scripts/telegram-bot.py
 ```
 
@@ -158,39 +161,31 @@ Four layers of cost control keep your monthly bill predictable:
 Prytan/
 ├── README.md
 ├── CLAUDE.md                          ← Read by Claude Code on every session
+├── LICENSE                            ← MIT
+├── SECURITY.md                        ← Vulnerability reporting policy
+├── PRIVACY.md                         ← Zero-telemetry guarantee
+├── install.sh                         ← One-liner installer
 ├── codegrapher.py                     ← CLI: query / explain / path / scan
 ├── codegrapher_hook.py                ← PreToolUse hook: query before grep
 ├── codegrapher/                       ← Knowledge graph engine (local, no API)
 │
 ├── assets/
-│   └── logo.svg
+│   ├── logo.svg
+│   ├── architecture.svg
+│   └── features.svg
 │
 ├── .claude/
-│   ├── settings.json                  ← Hook wiring
+│   ├── settings.json                  ← Hook wiring (2 lifecycle hooks)
 │   ├── hooks/
 │   │   └── codegrapher-memo.py        ← Episodic memory hook (fires every prompt)
-│   ├── agents/                        ← One .md file per agent
-│   │   ├── chief-of-staff.md
-│   │   ├── coordinator.md
-│   │   ├── backend-engineer.md
-│   │   ├── frontend-engineer.md
-│   │   ├── qa-engineer.md
-│   │   ├── devops-engineer.md
-│   │   ├── product-manager.md
-│   │   ├── security-advisor.md
-│   │   └── marketing-writer.md
-│   ├── books/                         ← Reference docs indexed by codegrapher
-│   │   └── README.md                  ← How to write a book entry
+│   ├── agents/                        ← 16 agent definitions (one .md each)
+│   ├── skills/                        ← Bundled skills (docx, xlsx, pdf, …)
 │   └── commands/
 │       ├── init.md                    ← /init wizard
 │       ├── board.md                   ← /board — leadership circle table
 │       ├── code-review.md
 │       ├── debug.md
-│       ├── daily-brief.md
-│       └── gsd/
-│           ├── plan-phase.md          ← /gsd:plan-phase
-│           ├── execute-phase.md       ← /gsd:execute-phase
-│           └── verify-work.md         ← /gsd:verify-work
+│       └── daily-brief.md
 │
 ├── .agent-config/
 │   ├── budget.yaml                    ← Monthly token cap + throttle thresholds
@@ -199,11 +194,7 @@ Prytan/
 ├── .agent-templates/
 │   ├── org-citizenship.md             ← Shared behavioral contract for all agents
 │   ├── door-types.md                  ← Decision classification guide
-│   └── meetings/
-│       ├── pod-daily.md
-│       ├── weekly-sprint-planning.md
-│       ├── monthly-milestone.md
-│       └── leadership-board.md
+│   └── meetings/                      ← Meeting agenda templates
 │
 ├── scripts/
 │   ├── telegram-bot.py                ← Chief-of-staff Telegram interface
@@ -244,9 +235,6 @@ Prytan/
 | `/code-review` | Structured code review with agent-assigned findings |
 | `/debug` | 5-step debugging session with root-cause classification |
 | `/daily-brief` | Pull today's org digest |
-| `/gsd:plan-phase N` | Plan work phase N (waves + acceptance criteria) |
-| `/gsd:execute-phase N` | Execute a planned phase |
-| `/gsd:verify-work` | Verify completed work against acceptance criteria |
 
 ### Telegram commands
 
@@ -258,6 +246,19 @@ Prytan/
 | `/reset` | Clear the current session |
 | `/goal <text>` | Set a persistent goal |
 | `/loop` | Start autonomous work toward the current goal |
+
+---
+
+## Lifecycle hooks
+
+Prytan ships two hooks wired in `.claude/settings.json` that fire automatically — no configuration needed.
+
+| Hook | Trigger | File | What it does |
+|---|---|---|---|
+| **PreToolUse** | Before every `Read`, `Glob`, `Grep`, or `LS` call | `codegrapher_hook.py` | Enforces graph-first: intercepts the file call, queries the knowledge graph, and injects the result so agents don't waste tokens globbing |
+| **UserPromptSubmit** | On every user message | `.claude/hooks/codegrapher-memo.py` | Retrieves the top-N most relevant past decisions and injects them as context — episodic memory that survives session resets |
+
+Both hooks are local Python scripts. They write nothing to disk beyond what's already in `.agent-logs/` and make no network calls.
 
 ---
 
