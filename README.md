@@ -36,6 +36,10 @@ Prytan gives your whole team a shared AI council: 9 role-specific agents that ro
 Works on <strong>Claude Code</strong> today. One <code>/init</code> wizard adapts it to any project in under 5 minutes.
 </p>
 
+<p align="center">
+  <img src="assets/architecture.svg" alt="Prytan agent routing flow" width="900">
+</p>
+
 ---
 
 ## Quickstart
@@ -126,6 +130,10 @@ Four layers of cost control keep your monthly bill predictable:
 2. **Episodic memo hook** — only the top-N relevant memories are injected per session
 3. **Scoped tools** — each agent gets only the tools it needs (`--allowedTools`)
 4. **Budget governor** — monthly cap with soft throttle at 80%, hard stop at 100%, and a per-run runaway cap
+
+<p align="center">
+  <img src="assets/features.svg" alt="Prytan built-in features" width="900">
+</p>
 
 ---
 

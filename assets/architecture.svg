@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" role="img" aria-labelledby="pry-title pry-desc">
+  <title id="pry-title">Prytan agent routing flow</title>
+  <desc id="pry-desc">You talk to Iris (chief-of-staff) via Telegram or Claude Code. Iris routes tasks to 8 domain agents. Cron + budget governor runs nightly automation. All decisions are logged locally.</desc>
+
+  <defs>
+    <linearGradient id="pry-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#101318"/>
+      <stop offset="55%"  stop-color="#171b24"/>
+      <stop offset="100%" stop-color="#0b0e13"/>
+    </linearGradient>
+    <linearGradient id="pry-gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#b8860b"/>
+      <stop offset="100%" stop-color="#e8c97a"/>
+    </linearGradient>
+    <linearGradient id="pry-blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="pry-green" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#059669"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="pry-purple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#c4b5fd"/>
+    </linearGradient>
+    <linearGradient id="pry-amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <filter id="pry-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pry-shadow" x="-12%" y="-12%" width="124%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <style>
+      .T { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .strong { fill: #f8fafc; }
+      .muted  { fill: #d1d5db; }
+      .quiet  { fill: #94a3b8; }
+
+      /* Headline fades in */
+      .head { animation: pryHead 18000ms ease-in-out infinite; }
+      @keyframes pryHead {
+        0%,95%,100% { opacity: 0; }
+        10%,88%    { opacity: 1; }
+      }
+
+      /* Cards cascade in */
+      .card { animation-duration: 18000ms; animation-timing-function: cubic-bezier(.2,.9,.2,1); animation-iteration-count: infinite; }
+      .c1 { animation-name: pryC1; }
+      .c2 { animation-name: pryC2; }
+      .c3 { animation-name: pryC3; }
+      .c4 { animation-name: pryC4; }
+      .c5 { animation-name: pryC5; }
+      .c6 { animation-name: pryC6; }
+      @keyframes pryC1 { 0%,8%,95%,100%  { opacity:0; transform:translateY(14px); } 18%,88% { opacity:1; transform:translateY(0); } }
+      @keyframes pryC2 { 0%,14%,95%,100% { opacity:0; transform:translateY(14px); } 24%,88% { opacity:1; transform:translateY(0); } }
+      @keyframes pryC3 { 0%,20%,95%,100% { opacity:0; transform:translateY(14px); } 30%,88% { opacity:1; transform:translateY(0); } }
+      @keyframes pryC4 { 0%,26%,95%,100% { opacity:0; transform:translateY(14px); } 36%,88% { opacity:1; transform:translateY(0); } }
+      @keyframes pryC5 { 0%,32%,95%,100% { opacity:0; transform:translateY(14px); } 42%,88% { opacity:1; transform:translateY(0); } }
+      @keyframes pryC6 { 0%,38%,95%,100% { opacity:0; transform:translateY(14px); } 48%,88% { opacity:1; transform:translateY(0); } }
+
+      /* Arrow pulse */
+      .arr { animation: pryArr 18000ms ease-in-out infinite; }
+      @keyframes pryArr { 0%,22%,92%,100% { opacity:0; } 30%,85% { opacity:1; } }
+
+      /* Decision glow pulse */
+      .pulse { animation: pryPulse 2200ms ease-in-out infinite; }
+      @keyframes pryPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .head,.card,.arr,.pulse { animation:none; opacity:1; transform:none; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="560" rx="28" fill="url(#pry-bg)"/>
+
+  <!-- Title -->
+  <g class="T head">
+    <text x="50" y="68"  class="strong" font-size="30" font-weight="850">Prytan — Agent Routing Flow</text>
+    <text x="50" y="100" class="muted"  font-size="17" font-weight="560">You talk to one agent. She routes everything. You only see what requires a human decision.</text>
+  </g>
+
+  <!-- ─── LEFT: YOU ─── -->
+  <g class="card c1" filter="url(#pry-shadow)">
+    <rect x="40" y="210" width="140" height="150" rx="18" fill="#0f172a" stroke="url(#pry-gold)" stroke-width="2.5"/>
+    <rect x="40" y="210" width="140" height="44" rx="18" fill="url(#pry-gold)" opacity="0.18"/>
+    <text x="110" y="237" fill="#e8c97a" font-size="13" font-weight="800" text-anchor="middle" class="T">YOU</text>
+    <text x="110" y="275" class="strong T" font-size="20" font-weight="850" text-anchor="middle">Telegram</text>
+    <text x="110" y="298" class="quiet T"  font-size="13" font-weight="560" text-anchor="middle">or Claude Code</text>
+    <text x="110" y="345" class="quiet T"  font-size="12" text-anchor="middle">/goal /loop /status</text>
+  </g>
+
+  <!-- YOU → Iris arrow -->
+  <g class="arr">
+    <line x1="182" y1="285" x2="248" y2="285" stroke="#475569" stroke-width="3"/>
+    <path d="M242 278 L254 285 L242 292" stroke="#94a3b8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ─── CENTER: IRIS (chief-of-staff) ─── -->
+  <g class="card c2" filter="url(#pry-shadow)">
+    <rect x="252" y="178" width="200" height="214" rx="20" fill="#0f172a" stroke="url(#pry-gold)" stroke-width="3"/>
+    <rect x="252" y="178" width="200" height="52" rx="20" fill="url(#pry-gold)" opacity="0.22"/>
+    <text x="352" y="209" fill="#e8c97a" font-size="13" font-weight="800" text-anchor="middle" class="T">CHIEF-OF-STAFF · L3</text>
+
+    <!-- Name glow -->
+    <text x="352" y="252" fill="#e8c97a" font-size="26" font-weight="900" text-anchor="middle" class="T pulse" filter="url(#pry-glow)">Iris</text>
+    <text x="352" y="252" fill="#e8c97a" font-size="26" font-weight="900" text-anchor="middle" class="T">Iris</text>
+
+    <text x="352" y="282" class="quiet T" font-size="13" text-anchor="middle">Routes via .agent-handoffs/</text>
+    <text x="352" y="302" class="quiet T" font-size="13" text-anchor="middle">Reads .agent-inbox/</text>
+    <text x="352" y="322" class="quiet T" font-size="13" text-anchor="middle">Escalates one-way doors</text>
+    <text x="352" y="356" fill="#e8c97a" font-size="12" font-weight="700" text-anchor="middle" class="T">@@RUN / @@RUNW / @@DECIDE</text>
+    <text x="352" y="374" fill="#e8c97a" font-size="12" font-weight="700" text-anchor="middle" class="T">@@TASK / @@GOAL / @@LOOP</text>
+  </g>
+
+  <!-- Iris → Agents fan arrows -->
+  <g class="arr">
+    <!-- Nestor -->
+    <line x1="452" y1="222" x2="574" y2="175" stroke="#475569" stroke-width="2"/>
+    <path d="M568 171 L578 175 L571 183" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Leon -->
+    <line x1="452" y1="252" x2="574" y2="244" stroke="#475569" stroke-width="2"/>
+    <path d="M568 240 L578 244 L568 248" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Clio -->
+    <line x1="452" y1="278" x2="574" y2="302" stroke="#475569" stroke-width="2"/>
+    <path d="M568 298 L578 302 L568 306" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Argus -->
+    <line x1="452" y1="305" x2="574" y2="362" stroke="#475569" stroke-width="2"/>
+    <path d="M568 358 L578 362 L568 366" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Atlas -->
+    <line x1="452" y1="332" x2="574" y2="420" stroke="#475569" stroke-width="2"/>
+    <path d="M568 416 L578 420 L568 424" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Thea -->
+    <line x1="452" y1="350" x2="574" y2="480" stroke="#475569" stroke-width="2" stroke-dasharray="5 3"/>
+    <path d="M568 476 L578 480 L568 484" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ─── RIGHT: AGENT CARDS ─── -->
+  <!-- Nestor (coordinator) -->
+  <g class="card c3 T" filter="url(#pry-shadow)">
+    <rect x="578" y="140" width="170" height="60" rx="14" fill="#0f172a" stroke="url(#pry-blue)" stroke-width="2"/>
+    <text x="598" y="167" fill="#60a5fa" font-size="13" font-weight="800">Nestor</text>
+    <text x="598" y="187" class="quiet" font-size="12">Coordinator · Governance · L2</text>
+  </g>
+
+  <!-- Leon (backend) -->
+  <g class="card c3 T" filter="url(#pry-shadow)">
+    <rect x="578" y="215" width="170" height="60" rx="14" fill="#0f172a" stroke="url(#pry-green)" stroke-width="2"/>
+    <text x="598" y="242" fill="#34d399" font-size="13" font-weight="800">Leon</text>
+    <text x="598" y="262" class="quiet" font-size="12">Backend · API · DB · Auth</text>
+  </g>
+
+  <!-- Clio (frontend) -->
+  <g class="card c4 T" filter="url(#pry-shadow)">
+    <rect x="578" y="275" width="170" height="60" rx="14" fill="#0f172a" stroke="url(#pry-blue)" stroke-width="2"/>
+    <text x="598" y="302" fill="#60a5fa" font-size="13" font-weight="800">Clio</text>
+    <text x="598" y="322" class="quiet" font-size="12">Frontend · UI · React</text>
+  </g>
+
+  <!-- Argus (qa) -->
+  <g class="card c4 T" filter="url(#pry-shadow)">
+    <rect x="578" y="335" width="170" height="60" rx="14" fill="#0f172a" stroke="url(#pry-green)" stroke-width="2"/>
+    <text x="598" y="362" fill="#34d399" font-size="13" font-weight="800">Argus</text>
+    <text x="598" y="382" class="quiet" font-size="12">QA · Tests · Coverage</text>
+  </g>
+
+  <!-- Atlas (devops) -->
+  <g class="card c5 T" filter="url(#pry-shadow)">
+    <rect x="578" y="395" width="170" height="60" rx="14" fill="#0f172a" stroke="url(#pry-purple)" stroke-width="2"/>
+    <text x="598" y="422" fill="#c4b5fd" font-size="13" font-weight="800">Atlas</text>
+    <text x="598" y="442" class="quiet" font-size="12">DevOps · Docker · CI/CD</text>
+  </g>
+
+  <!-- Thea + Themis + Lyra stacked small -->
+  <g class="card c5 T" filter="url(#pry-shadow)">
+    <rect x="578" y="460" width="170" height="82" rx="14" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <text x="598" y="482" fill="#94a3b8" font-size="12" font-weight="700">Thea · Product Manager</text>
+    <text x="598" y="502" fill="#94a3b8" font-size="12" font-weight="700">Themis · Security (read-only)</text>
+    <text x="598" y="522" fill="#94a3b8" font-size="12" font-weight="700">Lyra · Marketing Writer</text>
+  </g>
+
+  <!-- ─── FAR RIGHT: TOKEN ECONOMY + DECISIONS ─── -->
+  <!-- Budget governor -->
+  <g class="card c4 T" filter="url(#pry-shadow)">
+    <rect x="790" y="140" width="175" height="130" rx="16" fill="#0f172a" stroke="url(#pry-amber)" stroke-width="2"/>
+    <rect x="790" y="140" width="175" height="42" rx="16" fill="url(#pry-amber)" opacity="0.18"/>
+    <text x="877" y="167" fill="#fbbf24" font-size="13" font-weight="800" text-anchor="middle">BUDGET GOVERNOR</text>
+    <text x="877" y="196" class="muted" font-size="13" font-weight="700" text-anchor="middle">PROCEED</text>
+    <text x="877" y="216" class="muted" font-size="13" font-weight="700" text-anchor="middle">THROTTLE</text>
+    <text x="877" y="236" class="muted" font-size="13" font-weight="700" text-anchor="middle">HALT</text>
+    <text x="877" y="256" class="quiet" font-size="11" text-anchor="middle">monthly cap · runaway guard</text>
+  </g>
+
+  <!-- Decision ledger -->
+  <g class="card c5 T" filter="url(#pry-shadow)">
+    <rect x="790" y="290" width="175" height="120" rx="16" fill="#0f172a" stroke="url(#pry-purple)" stroke-width="2"/>
+    <rect x="790" y="290" width="175" height="42" rx="16" fill="url(#pry-purple)" opacity="0.18"/>
+    <text x="877" y="317" fill="#c4b5fd" font-size="13" font-weight="800" text-anchor="middle">DECISION LEDGER</text>
+    <text x="877" y="346" class="quiet" font-size="12" text-anchor="middle">two_way → agent decides</text>
+    <text x="877" y="364" fill="#e8c97a" font-size="12" font-weight="700" text-anchor="middle">one_way → you approve</text>
+    <text x="877" y="384" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle">strategic_fork → you decide</text>
+  </g>
+
+  <!-- Cron block -->
+  <g class="card c6 T" filter="url(#pry-shadow)">
+    <rect x="790" y="430" width="175" height="110" rx="16" fill="#0f172a" stroke="url(#pry-green)" stroke-width="2"/>
+    <rect x="790" y="430" width="175" height="42" rx="16" fill="url(#pry-green)" opacity="0.15"/>
+    <text x="877" y="457" fill="#34d399" font-size="13" font-weight="800" text-anchor="middle">CRON AUTOMATION</text>
+    <text x="877" y="484" class="quiet" font-size="12" text-anchor="middle">Daily standup</text>
+    <text x="877" y="502" class="quiet" font-size="12" text-anchor="middle">Weekly sprint planning</text>
+    <text x="877" y="520" class="quiet" font-size="12" text-anchor="middle">Monthly milestone review</text>
+  </g>
+
+  <!-- Connecting dots: agents → decision ledger -->
+  <g class="arr">
+    <line x1="748" y1="270" x2="790" y2="350" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Connecting dots: cron → budget -->
+  <g class="arr">
+    <line x1="877" y1="430" x2="877" y2="410" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <path d="M871 416 L877 406 L883 416" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

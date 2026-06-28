@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800" role="img" aria-labelledby="pf-title pf-desc">
+  <title id="pf-title">Prytan — nine built-in features, all automatic</title>
+  <desc id="pf-desc">Knowledge graph, episodic memory, decision ledger, budget governor, durable tasks, goal loop, safety layer, Telegram bot, and cron automation — all wired and ready after /init.</desc>
+
+  <defs>
+    <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#101318"/>
+      <stop offset="58%"  stop-color="#171b24"/>
+      <stop offset="100%" stop-color="#0b0e13"/>
+    </linearGradient>
+    <linearGradient id="pf-gGold"   x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b8860b"/><stop offset="100%" stop-color="#e8c97a"/></linearGradient>
+    <linearGradient id="pf-gGreen"  x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#86efac"/></linearGradient>
+    <linearGradient id="pf-gEmerald"x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#6ee7b7"/></linearGradient>
+    <linearGradient id="pf-gAmber"  x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#fcd34d"/></linearGradient>
+    <linearGradient id="pf-gRed"    x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#e11d48"/><stop offset="100%" stop-color="#fda4af"/></linearGradient>
+    <linearGradient id="pf-gBlue"   x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#93c5fd"/></linearGradient>
+    <linearGradient id="pf-gPurple" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient>
+    <linearGradient id="pf-gCyan"   x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0891b2"/><stop offset="100%" stop-color="#67e8f9"/></linearGradient>
+    <linearGradient id="pf-gIndigo" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#a5b4fc"/></linearGradient>
+    <filter id="pf-shadow" x="-12%" y="-12%" width="124%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .pft { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .strong { fill: #f8fafc; }
+      .muted  { fill: #cbd5e1; }
+      .quiet  { fill: #94a3b8; }
+      .head   { animation: pfHead 22000ms ease-in-out infinite; }
+      .card   { animation-duration: 22000ms; animation-timing-function: cubic-bezier(.2,.9,.2,1); animation-iteration-count: infinite; }
+      .pc1 { animation-name: pfR1; } .pc2 { animation-name: pfR2; } .pc3 { animation-name: pfR3; }
+      .pc4 { animation-name: pfR4; } .pc5 { animation-name: pfR5; } .pc6 { animation-name: pfR6; }
+      .pc7 { animation-name: pfR7; } .pc8 { animation-name: pfR8; } .pc9 { animation-name: pfR9; }
+      @keyframes pfHead { 0%,97%,100% { opacity:0; } 5%,92% { opacity:1; } }
+      @keyframes pfR1 { 0%,6%,97%,100%  { opacity:0; transform:translateY(16px); } 13%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR2 { 0%,9%,97%,100%  { opacity:0; transform:translateY(16px); } 16%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR3 { 0%,12%,97%,100% { opacity:0; transform:translateY(16px); } 19%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR4 { 0%,15%,97%,100% { opacity:0; transform:translateY(16px); } 22%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR5 { 0%,18%,97%,100% { opacity:0; transform:translateY(16px); } 25%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR6 { 0%,21%,97%,100% { opacity:0; transform:translateY(16px); } 28%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR7 { 0%,24%,97%,100% { opacity:0; transform:translateY(16px); } 31%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR8 { 0%,27%,97%,100% { opacity:0; transform:translateY(16px); } 34%,92% { opacity:1; transform:translateY(0); } }
+      @keyframes pfR9 { 0%,30%,97%,100% { opacity:0; transform:translateY(16px); } 37%,92% { opacity:1; transform:translateY(0); } }
+      @media (prefers-reduced-motion: reduce) {
+        .head,.card { animation:none; opacity:1; transform:none; }
+      }
+      .card { transform-box: fill-box; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="800" rx="28" fill="url(#pf-bg)"/>
+
+  <!-- Title -->
+  <g class="head pft">
+    <text x="500" y="68"  class="strong" font-size="40" font-weight="850" text-anchor="middle">What You Get After /init</text>
+    <text x="500" y="106" class="muted"  font-size="20" font-weight="560" text-anchor="middle">Nine features, all wired and ready. Zero configuration beyond the wizard.</text>
+  </g>
+
+  <!-- ROW 1 -->
+
+  <!-- 1: Knowledge Graph -->
+  <g class="card pc1 pft" filter="url(#pf-shadow)">
+    <rect x="36" y="140" width="294" height="192" rx="18" fill="#1c2230" stroke="#b8860b" stroke-width="1.8"/>
+    <text x="60" y="182" fill="#e8c97a" font-size="22" font-weight="850">Knowledge Graph</text>
+    <text x="60" y="218" class="muted" font-size="15" font-weight="520">Agents query a local offline</text>
+    <text x="60" y="240" class="muted" font-size="15" font-weight="520">graph instead of globbing files.</text>
+    <text x="60" y="262" class="muted" font-size="15" font-weight="520">Zero API calls. Zero tokens wasted.</text>
+    <rect x="60" y="288" width="246" height="30" rx="8" fill="#2a1f06"/>
+    <text x="183" y="309" fill="#fde68a" font-size="14" font-weight="800" text-anchor="middle">codegrapher.py query "auth"</text>
+  </g>
+
+  <!-- 2: Episodic Memory -->
+  <g class="card pc2 pft" filter="url(#pf-shadow)">
+    <rect x="353" y="140" width="294" height="192" rx="18" fill="#1c2230" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="377" y="182" fill="#86efac" font-size="22" font-weight="850">Episodic Memory</text>
+    <text x="377" y="218" class="muted" font-size="15" font-weight="520">Top-N relevant past decisions</text>
+    <text x="377" y="240" class="muted" font-size="15" font-weight="520">auto-injected every session.</text>
+    <text x="377" y="262" class="muted" font-size="15" font-weight="520">Fires on every user prompt.</text>
+    <rect x="377" y="288" width="246" height="30" rx="8" fill="#0c2414"/>
+    <text x="500" y="309" fill="#bbf7d0" font-size="14" font-weight="800" text-anchor="middle">codegrapher-memo.py hook</text>
+  </g>
+
+  <!-- 3: Decision Ledger -->
+  <g class="card pc3 pft" filter="url(#pf-shadow)">
+    <rect x="670" y="140" width="294" height="192" rx="18" fill="#1c2230" stroke="#7c3aed" stroke-width="1.8"/>
+    <text x="694" y="182" fill="#c4b5fd" font-size="22" font-weight="850">Decision Ledger</text>
+    <text x="694" y="218" class="muted" font-size="15" font-weight="520">Every agent decision logged.</text>
+    <text x="694" y="240" class="muted" font-size="15" font-weight="520">one_way → you approve.</text>
+    <text x="694" y="262" class="muted" font-size="15" font-weight="520">Append-only. Survives restarts.</text>
+    <rect x="694" y="288" width="246" height="30" rx="8" fill="#23123a"/>
+    <text x="817" y="309" fill="#ddd6fe" font-size="14" font-weight="800" text-anchor="middle">decision_ledger.py</text>
+  </g>
+
+  <!-- ROW 2 -->
+
+  <!-- 4: Budget Governor -->
+  <g class="card pc4 pft" filter="url(#pf-shadow)">
+    <rect x="36" y="352" width="294" height="192" rx="18" fill="#1c2230" stroke="#d97706" stroke-width="1.8"/>
+    <text x="60" y="394" fill="#fcd34d" font-size="22" font-weight="850">Budget Governor</text>
+    <text x="60" y="430" class="muted" font-size="15" font-weight="520">Monthly token cap with soft</text>
+    <text x="60" y="452" class="muted" font-size="15" font-weight="520">throttle at 80%, hard HALT at</text>
+    <text x="60" y="474" class="muted" font-size="15" font-weight="520">100%. No surprise bills.</text>
+    <rect x="60" y="500" width="246" height="30" rx="8" fill="#3a2408"/>
+    <text x="183" y="521" fill="#fde68a" font-size="14" font-weight="800" text-anchor="middle">cost_governor.py</text>
+  </g>
+
+  <!-- 5: Durable Tasks -->
+  <g class="card pc5 pft" filter="url(#pf-shadow)">
+    <rect x="353" y="352" width="294" height="192" rx="18" fill="#1c2230" stroke="#059669" stroke-width="1.8"/>
+    <text x="377" y="394" fill="#6ee7b7" font-size="22" font-weight="850">Durable Tasks</text>
+    <text x="377" y="430" class="muted" font-size="15" font-weight="520">Tasks survive session resets.</text>
+    <text x="377" y="452" class="muted" font-size="15" font-weight="520">@@TASK opens, @@DONE closes.</text>
+    <text x="377" y="474" class="muted" font-size="15" font-weight="520">JSON ledger in .agent-logs/.</text>
+    <rect x="377" y="500" width="246" height="30" rx="8" fill="#082f24"/>
+    <text x="500" y="521" fill="#a7f3d0" font-size="14" font-weight="800" text-anchor="middle">open_tasks.py</text>
+  </g>
+
+  <!-- 6: Goal Loop -->
+  <g class="card pc6 pft" filter="url(#pf-shadow)">
+    <rect x="670" y="352" width="294" height="192" rx="18" fill="#1c2230" stroke="#2563eb" stroke-width="1.8"/>
+    <text x="694" y="394" fill="#93c5fd" font-size="22" font-weight="850">Goal Loop</text>
+    <text x="694" y="430" class="muted" font-size="15" font-weight="520">Set a goal. Start the loop.</text>
+    <text x="694" y="452" class="muted" font-size="15" font-weight="520">Agents work autonomously until</text>
+    <text x="694" y="474" class="muted" font-size="15" font-weight="520">goal is met or budget reached.</text>
+    <rect x="694" y="500" width="246" height="30" rx="8" fill="#0c1b3a"/>
+    <text x="817" y="521" fill="#bfdbfe" font-size="14" font-weight="800" text-anchor="middle">goal_loop.py · /loop</text>
+  </g>
+
+  <!-- ROW 3 -->
+
+  <!-- 7: Safety Layer -->
+  <g class="card pc7 pft" filter="url(#pf-shadow)">
+    <rect x="36" y="564" width="294" height="192" rx="18" fill="#1c2230" stroke="#e11d48" stroke-width="1.8"/>
+    <text x="60" y="606" fill="#fda4af" font-size="22" font-weight="850">Safety Layer</text>
+    <text x="60" y="642" class="muted" font-size="15" font-weight="520">Escalation guard blocks</text>
+    <text x="60" y="664" class="muted" font-size="15" font-weight="520">permission confabulation.</text>
+    <text x="60" y="686" class="muted" font-size="15" font-weight="520">Claim guard flags shell lies.</text>
+    <rect x="60" y="712" width="246" height="30" rx="8" fill="#3a0c18"/>
+    <text x="183" y="733" fill="#fecdd3" font-size="14" font-weight="800" text-anchor="middle">escalation_guard · claim_guard</text>
+  </g>
+
+  <!-- 8: Telegram Bot -->
+  <g class="card pc8 pft" filter="url(#pf-shadow)">
+    <rect x="353" y="564" width="294" height="192" rx="18" fill="#1c2230" stroke="#0891b2" stroke-width="1.8"/>
+    <text x="377" y="606" fill="#67e8f9" font-size="22" font-weight="850">Telegram Bot</text>
+    <text x="377" y="642" class="muted" font-size="15" font-weight="520">Chat with Iris from your phone.</text>
+    <text x="377" y="664" class="muted" font-size="15" font-weight="520">Morning brief, standup, status,</text>
+    <text x="377" y="686" class="muted" font-size="15" font-weight="520">goal + loop all from /commands.</text>
+    <rect x="377" y="712" width="246" height="30" rx="8" fill="#082832"/>
+    <text x="500" y="733" fill="#a5f3fc" font-size="14" font-weight="800" text-anchor="middle">telegram-bot.py</text>
+  </g>
+
+  <!-- 9: Cron Automation -->
+  <g class="card pc9 pft" filter="url(#pf-shadow)">
+    <rect x="670" y="564" width="294" height="192" rx="18" fill="#1c2230" stroke="#4f46e5" stroke-width="1.8"/>
+    <text x="694" y="606" fill="#a5b4fc" font-size="22" font-weight="850">Cron Automation</text>
+    <text x="694" y="642" class="muted" font-size="15" font-weight="520">Daily standups, weekly sprint</text>
+    <text x="694" y="664" class="muted" font-size="15" font-weight="520">planning, monthly milestones —</text>
+    <text x="694" y="686" class="muted" font-size="15" font-weight="520">all autonomous, all logged.</text>
+    <rect x="694" y="712" width="246" height="30" rx="8" fill="#181a3a"/>
+    <text x="817" y="733" fill="#c7d2fe" font-size="14" font-weight="800" text-anchor="middle">org.crontab · orchestrator.py</text>
+  </g>
+</svg>
