@@ -21,7 +21,7 @@ and query the codebase through a local knowledge graph (no API, no tokens spent 
 
 | Task | Agent | Persona |
 |---|---|---|
-| Backend / API / DB | `backend-engineer` | **Theo** |
+| Backend / API / DB | `backend-engineer` | **Leon** |
 | Frontend / UI | `frontend-engineer` | **Clio** |
 | Product direction / roadmap | `product-manager` | **Thea** |
 | Tests / coverage / bug repro | `qa-engineer` | **Argus** |
