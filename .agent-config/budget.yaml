@@ -1,0 +1,29 @@
+# Token budget configuration
+# scripts/cost_governor.py reads this file before every cron run.
+# Edit these values to match your Anthropic account limits.
+
+# ── Monthly cap ──────────────────────────────────────────
+# Hard monthly budget in USD. Governor accumulates spend from spend_log.
+monthly_budget_usd: 50
+
+# ── Throttle thresholds ───────────────────────────────────
+# Soft throttle: log a warning and reduce parallelism, but still PROCEED.
+throttle_threshold_pct: 80
+
+# Hard halt: skip the cron run entirely and log HALT.
+halt_threshold_pct: 95
+
+# ── Per-run cap ───────────────────────────────────────────
+# Approximate token ceiling per single cron invocation.
+# The governor checks this BEFORE launching the run.
+# 200 000 tokens ≈ ~$0.60 on Sonnet 4, ~$3 on Opus 4.
+per_run_token_cap: 200000
+
+# ── Spend tracking ────────────────────────────────────────
+# JSONL file where governor appends {ts, tokens, usd, run_id} records.
+# Created automatically on first run.
+spend_log: .agent-config/spend.jsonl
+
+# ── Reset cadence ─────────────────────────────────────────
+# When to reset the monthly accumulator (day-of-month, 1-28).
+reset_day: 1

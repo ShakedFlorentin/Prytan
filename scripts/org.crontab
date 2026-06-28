@@ -1,0 +1,32 @@
+# Prytan crontab
+# Replace [PROJECT_PATH] with the absolute path to your project root.
+# Install: crontab scripts/org.crontab
+# Verify:  crontab -l
+#
+# Notes:
+#   - % must be escaped as \% inside crontab entries
+#   - All times are in the system timezone (check: timedatectl)
+#   - cost_governor.py exits 1 on HALT, which skips the rest of the command
+
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/home/user/.local/bin
+
+# ──────────────────────────────────────────────
+# Daily pod standup — weekdays at 08:00
+# ──────────────────────────────────────────────
+0 8 * * 1-5 cd [PROJECT_PATH] && python3 scripts/cost_governor.py && echo "Run the daily standup. Read .agent-config/daily-steps.yaml for the pod roster. For each pod in the list: read its last .agent-inbox digest, then answer: (1) what was done yesterday, (2) what is planned today, (3) any blockers. Write a combined digest to .agent-inbox/standup-$(date +\%Y\%m\%d).md using the template in .agent-templates/meetings/pod-daily.md." | claude --print --allowedTools "Read,Write,Bash,Glob,Grep" --max-turns 10 >> [PROJECT_PATH]/.agent-logs/cron.log 2>&1
+
+# ──────────────────────────────────────────────
+# Weekly sprint planning — Monday at 09:00
+# ──────────────────────────────────────────────
+0 9 * * 1 cd [PROJECT_PATH] && python3 scripts/cost_governor.py && echo "Run the weekly sprint planning session. Read .agent-inbox/standup-*.md from the past 7 days. Read the last sprint plan in .agent-inbox/sprint-plan-*.md. Review open handoffs in .agent-handoffs/. Then: (1) retrospective on last week, (2) prioritize tasks for each pod, (3) set 1-3 sprint goals with acceptance criteria. Write the plan to .agent-inbox/sprint-plan-$(date +\%Y\%m\%d).md using the template in .agent-templates/meetings/weekly-sprint-planning.md." | claude --print --allowedTools "Read,Write,Bash,Glob,Grep" --max-turns 15 >> [PROJECT_PATH]/.agent-logs/cron.log 2>&1
+
+# ──────────────────────────────────────────────
+# Monthly milestone review — 1st of month at 09:00
+# ──────────────────────────────────────────────
+0 9 1 * * cd [PROJECT_PATH] && python3 scripts/cost_governor.py && echo "Run the monthly milestone review. Read all sprint plans and standup digests from the past 30 days in .agent-inbox/. Read last month's milestone in .agent-inbox/milestone-*.md. Then: (1) score last month's milestones, (2) summarize metric trends, (3) list key decisions made, (4) update the risk register, (5) set next month's milestones. Write to .agent-inbox/milestone-$(date +\%Y\%m).md using the template in .agent-templates/meetings/monthly-milestone.md." | claude --print --allowedTools "Read,Write,Bash,Glob,Grep" --max-turns 20 >> [PROJECT_PATH]/.agent-logs/cron.log 2>&1
+
+# ──────────────────────────────────────────────
+# Weekly archive — Sunday at 23:00
+# ──────────────────────────────────────────────
+0 23 * * 0 cd [PROJECT_PATH] && bash scripts/archive-pods.sh >> [PROJECT_PATH]/.agent-logs/cron.log 2>&1

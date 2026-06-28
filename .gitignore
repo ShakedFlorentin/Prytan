@@ -1,0 +1,59 @@
+# Prytan .gitignore
+
+# ── Environment & secrets ─────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# ── Codegrapher outputs ───────────────────────
+codegrapher_out/
+
+# ── Agent runtime state ───────────────────────
+# Hook session state (transient)
+.agent-logs/.hook-state/
+
+# Spend log (contains cost data — keep local only)
+.agent-config/spend.jsonl
+
+# ── Keep these tracked ────────────────────────
+# .agent-inbox/, .agent-handoffs/, .agent-logs/ are intentionally
+# tracked so the team's shared memory persists in git.
+# Uncomment the lines below if you prefer to gitignore them:
+# .agent-inbox/
+# .agent-handoffs/
+# .agent-logs/
+
+# ── OS ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ── Editor ────────────────────────────────────
+.idea/
+.vscode/
+*.code-workspace
+
+# ── Logs ─────────────────────────────────────
+*.log
+
+# ── Test artifacts ────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/

@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Glob|Grep|Read|LS",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 codegrapher_hook.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/codegrapher-memo.py"
+          }
+        ]
+      }
+    ]
+  }
+}

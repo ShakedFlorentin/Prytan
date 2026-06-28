@@ -1,0 +1,50 @@
+# Prytan daily-steps configuration
+# dispatch_day.py and org.crontab use this file to know what to run and when.
+# Edit after running setup/configure.py.
+
+project_name: "[PROJECT_NAME]"
+
+# Agent that coordinates cross-pod work
+coordinator: coordinator
+
+# Agent that faces the Telegram bot
+chief_of_staff: chief-of-staff
+
+# ── Codegrapher ──────────────────────────────────────────
+codegrapher:
+  # Directories to scan on each daily run (incremental, uses mtime cache)
+  scan_dirs:
+    - src/
+  # Set to false to skip auto-scan on cron runs
+  auto_scan_on_run: true
+
+# ── Pod schedule ─────────────────────────────────────────
+# Each pod entry maps to a .claude/agents/<name>.md file.
+# dispatch_day.py iterates this list for the daily standup.
+pods:
+  - name: coordinator
+    model: sonnet
+    domain: cross-team coordination
+    writable: true
+
+  - name: chief-of-staff
+    model: sonnet
+    domain: human interface, Telegram routing
+    writable: true
+
+# ── Meeting templates ─────────────────────────────────────
+meetings:
+  daily_standup:
+    template: .agent-templates/meetings/pod-daily.md
+    output_dir: .agent-inbox/
+    output_prefix: standup
+
+  weekly_sprint:
+    template: .agent-templates/meetings/weekly-sprint-planning.md
+    output_dir: .agent-inbox/
+    output_prefix: sprint-plan
+
+  monthly_milestone:
+    template: .agent-templates/meetings/monthly-milestone.md
+    output_dir: .agent-inbox/
+    output_prefix: milestone
