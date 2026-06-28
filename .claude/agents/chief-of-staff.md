@@ -7,7 +7,7 @@ description: >
   routes requests to the right pod, synthesizes inbox digests, and surfaces decisions
   that need human input. Activate for status queries, cross-team routing, "what's
   happening" questions, or when talking to the org from outside Claude Code.
-model: claude-opus-4-8
+model: claude-sonnet-4-6  # change to claude-opus-4-8 for heavier routing, or claude-haiku-4-5-20251001 to save budget
 tools:
   - Read
   - Write

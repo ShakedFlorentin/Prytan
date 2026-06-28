@@ -33,6 +33,9 @@ and query the codebase through a local knowledge graph (no API, no tokens spent 
 
 *After `/init`, this table is filled in with your actual agent names.*
 
+**Changing a model:** Edit the `model:` line in the agent's `.claude/agents/<name>.md` file.
+Iris (chief-of-staff) defaults to `claude-sonnet-4-6`. Upgrade to `claude-opus-4-8` for more complex routing, or drop to `claude-haiku-4-5-20251001` to save budget.
+
 **Key rules:**
 - `security-advisor` is read-only — it NEVER edits code.
 - All agents write handoffs to `.agent-handoffs/` after completing work.

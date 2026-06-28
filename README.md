@@ -238,6 +238,8 @@ Prytan/
 
 ### Telegram commands
 
+> **Setup guide:** [docs/telegram-setup.md](docs/telegram-setup.md) — create your bot via BotFather, get your chat ID, configure `.env`, start the bot.
+
 | Command | What it does |
 |---|---|
 | `/status` | Session + budget status |
