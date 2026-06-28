@@ -19,16 +19,17 @@ and query the codebase through a local knowledge graph (no API, no tokens spent 
 
 ## Agent Routing
 
-| Task | Agent to use |
-|---|---|
-| Backend / API / DB | `backend-engineer` |
-| Frontend / UI | `frontend-engineer` |
-| Product direction / roadmap | `product-manager` |
-| Tests / coverage / bug repro | `qa-engineer` |
-| Docker / CI / deploy | `devops-engineer` |
-| Security review (read-only) | `security-advisor` |
-| Cross-pod decisions / strategy | run Leadership Board via chief-of-staff |
-| Quick chat / routing / "what's happening" | `chief-of-staff` (also on Telegram) |
+| Task | Agent | Persona |
+|---|---|---|
+| Backend / API / DB | `backend-engineer` | **Hephaestus** |
+| Frontend / UI | `frontend-engineer` | **Clio** |
+| Product direction / roadmap | `product-manager` | **Thea** |
+| Tests / coverage / bug repro | `qa-engineer` | **Argus** |
+| Docker / CI / deploy | `devops-engineer` | **Prometheus** |
+| Security review (read-only) | `security-advisor` | **Themis** |
+| Marketing / copy / content / SEO | `marketing-writer` | **Nike** |
+| Cross-pod decisions / strategy | Leadership Board via chief-of-staff | **Nestor** chairs |
+| Quick chat / routing / Telegram | `chief-of-staff` | **Iris** |
 
 *After `/init`, this table is filled in with your actual agent names.*
 
