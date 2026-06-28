@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/ShakedFlorentin/Prytan/releases"><img src="https://img.shields.io/badge/version-1.0.0-gold" alt="Version 1.0.0"></a>
   <a href="https://github.com/ShakedFlorentin/Prytan"><img src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet" alt="Claude Code Plugin"></a>
-  <a href=".claude/agents/"><img src="https://img.shields.io/badge/agents-9-4f8ef7" alt="9 Agents"></a>
+  <a href=".claude/agents/"><img src="https://img.shields.io/badge/agents-16-4f8ef7" alt="9 Agents"></a>
   <a href="scripts/"><img src="https://img.shields.io/badge/scripts-17-brightgreen" alt="17 Scripts"></a>
   <a href=".claude/hooks/"><img src="https://img.shields.io/badge/hooks-2%20lifecycle-purple" alt="2 Lifecycle Hooks"></a>
   <a href="https://github.com/ShakedFlorentin/Prytan/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
@@ -82,14 +82,22 @@ You (Telegram / Claude Code)
   ├─ reads .agent-inbox/ for pending decisions
   └─ pings you on Telegram for one-way doors
          │
-         ├──→ coordinator (Nestor, L2)   ← org governance, promotions
-         ├──→ backend-engineer (Leon)    ← API, DB, auth
-         ├──→ frontend-engineer (Clio)   ← UI, components
-         ├──→ qa-engineer (Argus)        ← tests, coverage
-         ├──→ devops-engineer (Atlas)    ← Docker, CI/CD
-         ├──→ product-manager (Thea)     ← roadmap, specs
-         ├──→ security-advisor (Themis)  ← threat model (read-only)
-         └──→ marketing-writer (Lyra)    ← content, SEO, copy
+         ├──→ coordinator (Nestor, L2)      ← org governance, promotions
+         ├──→ tech-lead (Daedalus, L2)    ← architecture, ADRs
+         ├──→ org-governor (Kronos, L2)   ← trust management, recurring meetings
+         ├──→ backend-engineer (Leon)     ← API, DB, auth
+         ├──→ frontend-engineer (Clio)    ← UI, components
+         ├──→ qa-engineer (Argus)         ← tests, coverage
+         ├──→ devops-engineer (Atlas)     ← Docker, CI/CD
+         ├──→ product-manager (Thea)      ← roadmap, specs
+         ├──→ ux-designer (Muse)          ← UX flows, design system
+         ├──→ security-advisor (Themis)   ← threat model (read-only)
+         ├──→ legal-advisor (Solon)       ← licensing, compliance (read-only)
+         ├──→ marketing-writer (Lyra)     ← content, SEO, copy
+         ├──→ growth-strategist (Kairos)  ← GTM, positioning, funnel
+         ├──→ learning-loop (Sophia)      ← nightly lesson distillation
+         ├──→ org-doctor (Chiron)         ← nightly agent health audit
+         └──→ (your custom agents here)
 
 crontab ──→ cost_governor.py ──→ PROCEED ──→ orchestrator.py ──→ agents
 ```
@@ -102,13 +110,20 @@ Every agent is a markdown file in `.claude/agents/`. Each has a role, a trust le
 |---|---|---|---|
 | `chief-of-staff` | **Iris** | Human interface, Telegram, routing | L3 |
 | `coordinator` | **Nestor** | Org governance, decisions, promotions | L2 |
+| `tech-lead` | **Daedalus** | Architecture decisions, ADRs, technical arbitration | L2 |
+| `org-governor` | **Kronos** | Trust management, agent proposals, recurring meetings | L2 |
 | `backend-engineer` | **Leon** | API, database, auth | L1 |
 | `frontend-engineer` | **Clio** | UI, components, React | L1 |
 | `qa-engineer` | **Argus** | Tests, coverage, bug repro | L1 |
 | `devops-engineer` | **Atlas** | Docker, CI/CD, deploy | L1 |
 | `product-manager` | **Thea** | Roadmap, specs, priorities | L1 |
+| `ux-designer` | **Muse** | UX flows, design system, Playwright iteration | L1 |
 | `security-advisor` | **Themis** | Threat model, review (read-only) | L1 |
+| `legal-advisor` | **Solon** | OSS licensing, GDPR, contract review (read-only) | L1 |
 | `marketing-writer` | **Lyra** | Content, SEO, copy, press | L1 |
+| `growth-strategist` | **Kairos** | GTM, positioning, launch planning, funnel metrics | L1 |
+| `learning-loop` | **Sophia** | Nightly lesson distillation into skills store | L1 |
+| `org-doctor` | **Chiron** | Nightly agent definition health audit and fixes | L1 |
 
 ### Decision routing
 
