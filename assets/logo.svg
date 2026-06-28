@@ -1,0 +1,61 @@
+<svg viewBox="0 0 780 180" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <!-- Dark background -->
+  <rect width="780" height="180" rx="12" fill="#0d1117"/>
+
+  <!-- Column group (left) -->
+  <g transform="translate(60, 18)">
+    <!-- Column 1 -->
+    <rect x="0"  y="12" width="14" height="90" rx="2" fill="#7c6f5b" opacity="0.85"/>
+    <rect x="0"  y="8"  width="14" height="6"  rx="1" fill="#a09075"/>
+    <rect x="-2" y="100" width="18" height="5" rx="1" fill="#a09075"/>
+    <!-- Column 2 -->
+    <rect x="22" y="12" width="14" height="90" rx="2" fill="#7c6f5b" opacity="0.85"/>
+    <rect x="22" y="8"  width="14" height="6"  rx="1" fill="#a09075"/>
+    <rect x="20" y="100" width="18" height="5" rx="1" fill="#a09075"/>
+    <!-- Column 3 -->
+    <rect x="44" y="12" width="14" height="90" rx="2" fill="#7c6f5b" opacity="0.85"/>
+    <rect x="44" y="8"  width="14" height="6"  rx="1" fill="#a09075"/>
+    <rect x="42" y="100" width="18" height="5" rx="1" fill="#a09075"/>
+    <!-- Entablature (top beam) -->
+    <rect x="-4" y="0" width="66" height="10" rx="2" fill="#c8b89a"/>
+    <!-- Stylobate (base platform) -->
+    <rect x="-6" y="105" width="70" height="7" rx="2" fill="#8a7a65"/>
+    <!-- Flame/fire accent -->
+    <ellipse cx="29" cy="0" rx="8" ry="4" fill="#f59e0b" opacity="0.3"/>
+    <path d="M25,-8 Q29,-18 33,-8 Q29,-4 25,-8Z" fill="#f59e0b" opacity="0.6"/>
+    <path d="M27,-6 Q29,-14 31,-6 Q29,-3 27,-6Z" fill="#fbbf24" opacity="0.9"/>
+  </g>
+
+  <!-- Title text: PRYTAN -->
+  <text x="165" y="82" font-size="72" font-weight="bold" letter-spacing="6" fill="url(#gold)" dominant-baseline="middle">PRYTAN</text>
+
+  <!-- Subtitle -->
+  <text x="165" y="122" font-size="16" fill="#8b949e" letter-spacing="2" dominant-baseline="middle">MULTI-AGENT OS FOR SOFTWARE TEAMS</text>
+
+  <!-- Thin separator line -->
+  <line x1="165" y1="138" x2="720" y2="138" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Tag line (bottom) -->
+  <text x="165" y="157" font-size="12.5" fill="#6e7681" letter-spacing="0.5" dominant-baseline="middle">Built on Claude Code · 9 agents · Greek council, modern engineering</text>
+
+  <!-- Column group (right mirror, decorative) -->
+  <g transform="translate(698, 18)">
+    <rect x="0"  y="12" width="14" height="90" rx="2" fill="#7c6f5b" opacity="0.5"/>
+    <rect x="0"  y="8"  width="14" height="6"  rx="1" fill="#a09075" opacity="0.5"/>
+    <rect x="-2" y="100" width="18" height="5" rx="1" fill="#a09075" opacity="0.5"/>
+    <rect x="22" y="12" width="14" height="90" rx="2" fill="#7c6f5b" opacity="0.5"/>
+    <rect x="22" y="8"  width="14" height="6"  rx="1" fill="#a09075" opacity="0.5"/>
+    <rect x="20" y="100" width="18" height="5" rx="1" fill="#a09075" opacity="0.5"/>
+    <rect x="-4" y="0" width="40" height="10" rx="2" fill="#c8b89a" opacity="0.5"/>
+    <rect x="-6" y="105" width="44" height="7" rx="2" fill="#8a7a65" opacity="0.5"/>
+  </g>
+
+  <!-- Gold gradient definition -->
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#e8c97a"/>
+      <stop offset="50%"  stop-color="#d4a843"/>
+      <stop offset="100%" stop-color="#b8860b"/>
+    </linearGradient>
+  </defs>
+</svg>
