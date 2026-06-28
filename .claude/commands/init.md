@@ -1,113 +1,101 @@
 # /init — Prytan Setup
 
-You are setting up Prytan for the first time. Your job is to run a friendly, conversational onboarding — one question at a time, no jargon, no lectures. After collecting answers, write all config files and leave the user ready to go.
+Run a fast, friendly onboarding. Ask only what you genuinely cannot guess. Use smart defaults for everything else. The whole thing should feel like a 60-second chat, not a form.
 
 ---
 
 ## How to run this
 
-Start with a warm welcome, then ask questions **one at a time**. Wait for the answer. Move on. Never ask two questions in the same message.
+Open with a warm one-liner, then ask the three questions **one at a time**. Never ask two in the same message.
 
-**Opening message (say this first):**
+**Opening message:**
 
-> Welcome to Prytan. I'm going to set up your AI council — it takes about 2 minutes.
-> First question: **what's the name of your project or business?**
+> Hey! Let's set up your Prytan council. I just need three quick answers and I'll handle the rest.
+> 
+> First: **what's the name of your project or business?**
 
 ---
 
-## The 7 questions
+## The 3 questions
 
 **Q1 — Name**
-What's the name of your project or business?
-*(Any answer is fine — "Acme", "my startup", "freelance consulting")*
+What's your project or business called?
 
 **Q2 — What it does**
-Describe what you do in one sentence.
-*(This goes into every agent's context so they understand your world.)*
+One sentence: what does it do?
+*(This becomes the shared context every agent reads before acting.)*
 
-**Q3 — Scale**
-How many people are on your team?
+**Q3 — Team size**
 > 1. Just me
-> 2. Small team (2–15)
+> 2. Small team (2–15 people)
 > 3. Larger org (15+)
 
-Use the answer to decide which agents to activate (see Agent Presets below).
-
-**Q4 — Telegram bot**
-Do you want to be able to chat with Iris (your chief-of-staff) from your phone via Telegram?
-> y / n (default: y)
-
-If yes, after setup tell them to:
-- Create a bot via @BotFather → get a token
-- Get their chat ID from @userinfobot
-- Add both to `.env` (you'll generate `.env.example` for them)
-
-**Q5 — Monthly budget**
-What's your monthly limit for AI spend? This is a guardrail — agents halt automatically when you hit it.
-> 1. ~$10/month (light use)
-> 2. ~$25/month (regular use)
-> 3. ~$50/month (heavy use)
-> 4. Custom — I'll type a number
-
-Map to token caps: $10 → 20M tokens, $25 → 50M tokens, $50 → 100M tokens.
-
-**Q6 — Daily standup time**
-What time should Prytan run the daily standup and morning brief? (24-hour format)
-*(Default: 08:00)*
-
-**Q7 — Timezone**
-What's your timezone?
-*(Examples: Asia/Jerusalem, America/New_York, Europe/London, UTC)*
-*(Default: UTC)*
+That's it. Don't ask anything else.
 
 ---
 
-## Agent presets
+## Smart defaults (apply silently — do NOT ask about these)
 
-Based on Q3, activate these agents by default:
+| Setting | Default | Where it lives |
+|---|---|---|
+| Telegram bot | disabled | `.agent-config/project.yaml` |
+| Monthly budget | $25 / month (50M tokens) | `.agent-config/budget.yaml` |
+| Standup time | 08:00 | `scripts/org.crontab` |
+| Timezone | detect via `python3 -c "import datetime; print(datetime.datetime.now().astimezone().tzname())"` — fall back to UTC | `scripts/org.crontab` |
+| Agent preset | see below | `.agent-config/project.yaml` |
 
-**Just me (solo):**
-Iris (chief-of-staff), Nestor (coordinator), Thea (product), Lyra (marketing), Kairos (growth), Sophia (learning), Chiron (health)
+**Agent presets by team size:**
 
-**Small team:**
-All of the above + Leon (backend), Clio (frontend), Argus (QA), Atlas (devops), Muse (UX), Themis (security), Solon (legal)
-
-**Larger org:**
-All 16 agents active.
-
-Always tell the user which agents are being activated and let them add or remove any before writing files.
+- **Just me:** Iris, Nestor, Thea, Lyra, Kairos, Sophia, Chiron *(7 agents)*
+- **Small team:** above + Leon, Clio, Argus, Atlas, Muse, Themis, Solon *(14 agents)*
+- **Larger org:** all 16 agents
 
 ---
 
-## After collecting all answers
+## After the 3 answers
 
-Generate these files — show a ✓ for each one as you write it:
+Show a compact summary and ask one final yes/no:
+
+> Got it. Here's what I'll set up:
+>
+> - **Project:** [Q1] — [Q2]
+> - **Agents:** [N] active ([preset name])
+> - **Budget:** $25/month · standup at 08:00 [timezone]
+> - **Telegram:** not enabled (you can add it later — see docs/telegram-setup.md)
+>
+> Looks good? I'll write the files now. *(yes / change something)*
+
+If they say yes, write files. If they say "change something", ask what specifically — don't restart the whole wizard.
+
+---
+
+## Files to write (show ✓ for each)
 
 **`.agent-config/project.yaml`**
 ```yaml
 project_name: <Q1>
-description: <Q2>
+description: "<Q2>"
 scale: <solo|small|large>
-active_agents: [<list from preset>]
-telegram_bot: <true|false>
-monthly_budget_usd: <amount>
-standup_time: <Q6>
-timezone: <Q7>
+active_agents: [<preset list>]
+telegram_bot: false
+monthly_budget_usd: 25
+standup_time: "08:00"
+timezone: "<detected or UTC>"
 ```
 
-**`.agent-config/budget.yaml`** — set `monthly_token_cap` from Q5 mapping.
+**`.agent-config/budget.yaml`** — monthly_token_cap: 50000000, throttle at 80%, halt at 100%.
 
-**`scripts/org.crontab`** — replace `[PROJECT_PATH]` with `$PWD`, set cron time from Q6, timezone from Q7.
+**`scripts/org.crontab`** — `[PROJECT_PATH]` → `$PWD`, time from default, timezone from detected.
 
-**`.env.example`** (always, even if Telegram is no) — users may enable it later:
+**`.env.example`**
 ```
 TELEGRAM_BOT_TOKEN=your_token_here
 TELEGRAM_ALLOWED_CHAT_ID=your_chat_id_here
 ```
 
-**`CLAUDE.md`** — update the routing table to list only active agents.
+**`CLAUDE.md`** — update routing table to list only active agents, fill in project name.
 
-Then run:
+Then run silently:
 ```bash
 python3 codegrapher.py scan .
 ```
@@ -116,21 +104,19 @@ python3 codegrapher.py scan .
 
 ## Closing message
 
-End with something like:
-
-> Your council is ready. Here's what to do next:
+> You're all set. Your [N]-agent council is ready.
 >
-> - **Activate cron** (daily standups, weekly planning): `crontab scripts/org.crontab`
-> - **Start Telegram bot** (if enabled): `python3 scripts/telegram-bot.py`
+> **Next steps:**
+> - Activate daily standups: `crontab scripts/org.crontab`
+> - Add Telegram (optional): see [docs/telegram-setup.md](docs/telegram-setup.md)
 >
-> That's it. Ask me anything about your project — I'll route it to the right agent.
+> Just talk to me normally — I'll route everything from here.
 
 ---
 
 ## Rules
 
-- One question per message. Never stack two questions.
-- If the user says "default" or "skip", use the listed default — no follow-up needed.
-- Keep your messages short. This is a setup wizard, not a lecture.
-- If the user seems confused by a question, offer examples or just pick the most sensible default for them.
-- After writing files, always run `python3 codegrapher.py scan .` to index the new configs.
+- One question per message. Maximum.
+- Never ask about budget, timezone, standup time, or Telegram — those are defaults.
+- If the user volunteers extra info ("I'm in Tel Aviv", "I want Telegram"), absorb it silently and use it.
+- Keep every message short. This is a 60-second setup, not an interview.
