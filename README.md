@@ -44,31 +44,42 @@ Works on <strong>Claude Code</strong> today. One <code>/init</code> wizard adapt
 
 ## Quickstart
 
-```bash
-# Option A — one-liner
-curl -fsSL https://raw.githubusercontent.com/ShakedFlorentin/Prytan/main/install.sh | bash
+> **Prerequisites:** [Claude Code](https://claude.ai/code) · Python 3.10+
 
-# Option B — manual
-git clone https://github.com/ShakedFlorentin/Prytan.git && cd Prytan
-./install.sh
+**Step 1 — Install**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ShakedFlorentin/Prytan/main/install.sh | bash
 ```
 
-The installer checks prerequisites, runs the setup wizard, and builds the initial knowledge graph. Then:
+This checks prerequisites and clones the repo. That's it.
+
+**Step 2 — Run the setup wizard**
 
 ```bash
-# Open Claude Code and run the agent wizard
-claude
-/init
+cd ~/Prytan
+claude        # opens Claude Code in the Prytan directory
+```
 
-# Install the crontab (daily standups, weekly planning, monthly reviews)
+Then inside Claude Code, type:
+
+```
+/init
+```
+
+The wizard asks ~7 questions (your project name, team size, budget, timezone) and writes all config files for you.
+
+**Step 3 — Activate**
+
+```bash
+# Start the daily standup / weekly planning cron
 crontab scripts/org.crontab
 
-# Optional: start the Telegram bot
+# Optional: chat with Iris from your phone
 python3 scripts/telegram-bot.py
 ```
 
-> **Prerequisites:** [Claude Code](https://claude.ai/code) (`npm install -g @anthropic/claude-code`) and Python 3.10+.  
-> Don't want the wizard? See [setup/SETUP.md](setup/SETUP.md) for manual setup.
+See [docs/telegram-setup.md](docs/telegram-setup.md) for the Telegram bot walkthrough.
 
 ---
 
