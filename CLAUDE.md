@@ -21,13 +21,13 @@ and query the codebase through a local knowledge graph (no API, no tokens spent 
 
 | Task | Agent | Persona |
 |---|---|---|
-| Backend / API / DB | `backend-engineer` | **Hephaestus** |
+| Backend / API / DB | `backend-engineer` | **Theo** |
 | Frontend / UI | `frontend-engineer` | **Clio** |
 | Product direction / roadmap | `product-manager` | **Thea** |
 | Tests / coverage / bug repro | `qa-engineer` | **Argus** |
 | Docker / CI / deploy | `devops-engineer` | **Prometheus** |
 | Security review (read-only) | `security-advisor` | **Themis** |
-| Marketing / copy / content / SEO | `marketing-writer` | **Nike** |
+| Marketing / copy / content / SEO | `marketing-writer` | **Lyra** |
 | Cross-pod decisions / strategy | Leadership Board via chief-of-staff | **Nestor** chairs |
 | Quick chat / routing / Telegram | `chief-of-staff` | **Iris** |
 
