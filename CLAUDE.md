@@ -25,7 +25,7 @@ and query the codebase through a local knowledge graph (no API, no tokens spent 
 | Frontend / UI | `frontend-engineer` | **Clio** |
 | Product direction / roadmap | `product-manager` | **Thea** |
 | Tests / coverage / bug repro | `qa-engineer` | **Argus** |
-| Docker / CI / deploy | `devops-engineer` | **Prometheus** |
+| Docker / CI / deploy | `devops-engineer` | **Atlas** |
 | Security review (read-only) | `security-advisor` | **Themis** |
 | Marketing / copy / content / SEO | `marketing-writer` | **Lyra** |
 | Cross-pod decisions / strategy | Leadership Board via chief-of-staff | **Nestor** chairs |
