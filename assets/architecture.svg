@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" role="img" aria-labelledby="pry-title pry-desc">
   <title id="pry-title">Prytan agent routing flow</title>
-  <desc id="pry-desc">You talk to Iris (chief-of-staff) via Telegram or Claude Code. Iris routes tasks to 8 domain agents. Cron + budget governor runs nightly automation. All decisions are logged locally.</desc>
+  <desc id="pry-desc">You talk to Iris (chief-of-staff) via Telegram or Claude Code. Iris routes tasks to 16 domain agents. Cron + budget governor runs nightly automation. All decisions are logged locally.</desc>
 
   <defs>
     <linearGradient id="pry-bg" x1="0" y1="0" x2="1" y2="1">
@@ -49,7 +49,7 @@
       }
 
       /* Cards cascade in */
-      .card { animation-duration: 18000ms; animation-timing-function: cubic-bezier(.2,.9,.2,1); animation-iteration-count: infinite; }
+      .card { animation-duration: 18000ms; animation-timing-function: cubic-bezier(.2,.9,.2,1); animation-iteration-count: infinite; transform-box: fill-box; }
       .c1 { animation-name: pryC1; }
       .c2 { animation-name: pryC2; }
       .c3 { animation-name: pryC3; }

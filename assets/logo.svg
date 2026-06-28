@@ -48,5 +48,5 @@
   <text x="390" y="76"  font-size="70" font-weight="bold" letter-spacing="6" fill="url(#gold)" dominant-baseline="middle" text-anchor="middle">PRYTAN</text>
   <text x="390" y="118" font-size="15" fill="#8b949e" letter-spacing="2.5" dominant-baseline="middle" text-anchor="middle">YOUR AI COUNCIL FOR ANY BUSINESS</text>
   <line x1="100" y1="135" x2="680" y2="135" stroke="#30363d" stroke-width="1"/>
-  <text x="390" y="155" font-size="12" fill="#6e7681" letter-spacing="0.5" dominant-baseline="middle" text-anchor="middle">9 agents · autonomous · local · zero telemetry</text>
+  <text x="390" y="155" font-size="12" fill="#6e7681" letter-spacing="0.5" dominant-baseline="middle" text-anchor="middle">16 agents · autonomous · local · zero telemetry</text>
 </svg>
