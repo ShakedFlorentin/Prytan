@@ -15,7 +15,7 @@ This guide takes about 5 minutes.
 5. BotFather replies with your **bot token**. It looks like:
 
    ```
-   7412058391:AAFx3k2e9L8mNpQr1vWxYzKjHdTsBuIoGcE
+   <your-bot-id>:<your-bot-token>
    ```
 
    Copy it — you'll need it in Step 3.
@@ -56,7 +56,7 @@ cp .env.example .env
 Open `.env` and fill in both values:
 
 ```env
-TELEGRAM_BOT_TOKEN=7412058391:AAFx3k2e9L8mNpQr1vWxYzKjHdTsBuIoGcE
+TELEGRAM_BOT_TOKEN=<your-bot-id>:<your-bot-token>
 TELEGRAM_ALLOWED_CHAT_ID=123456789
 ```
 
