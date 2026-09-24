@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.env
+.inbox/
+.handoffs/
+.proposals/
+.logs/
+codegrapher_out/
+config.yaml
+.agent-runtime/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
