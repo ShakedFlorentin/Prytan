@@ -3,12 +3,13 @@
 
   • UserPromptSubmit → inject memories relevant to the prompt, each with the
     line that carries the fact. Words propose candidates (per passage, not per
-    file); a local embedding model, when available, decides whether each is
-    actually ABOUT the prompt (core/knowledge/relevance.py, semantic.py).
-    Usually nothing is printed, so unrelated memories never ride along.
+    file) and a strict word gate decides; projects that opt in
+    (memory.semantic: true) let a local embedding model decide instead
+    (core/knowledge/relevance.py, semantic.py). Usually nothing is printed.
     Candidates: memory/, the comm dirs, per-agent logs and saved turns
     (core/knowledge/memory/sources.py), read fresh from disk.
-  • SessionStart → embed new/changed memories in the background.
+  • SessionStart → if semantic recall is on, embed new/changed memories in the
+    background.
   • Stop → save the finished turn to .logs/conversations.jsonl so later prompts
     can recall it: local only (a .logs/.gitignore keeps it out of git), prompt
     and reply capped at CAP chars, secrets redacted, a repeat save of the same
@@ -29,7 +30,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))  # plugin root
 
-from core.knowledge.memory.sources import CONVERSATIONS, embedder, gather  # noqa: E402
+from core.knowledge.memory.sources import (  # noqa: E402
+    CONVERSATIONS, embedder, gather, semantic_enabled,
+)
 from core.knowledge.relevance import render, select  # noqa: E402
 
 N_PROMPT = 3
@@ -70,7 +73,10 @@ def _root(event: dict) -> Path:
 # ── UserPromptSubmit ────────────────────────────────────────────────────────
 
 def recall_block(root: Path, prompt: str, session: str = "", n: int = N_PROMPT,
-                 semantic: bool = True) -> str:
+                 semantic: bool | None = None) -> str:
+    """semantic=None follows the project's opt-in (memory.semantic in config.yaml)."""
+    if semantic is None:
+        semantic = semantic_enabled(root)
     emb = embedder(root) if semantic else None
     return render(select(prompt, gather(root, exclude_session=session), n, emb))
 
@@ -186,7 +192,7 @@ def main() -> int:
                 print(block)
         elif name == "Stop":
             remember(event, _root(event))
-        elif name == "SessionStart":
+        elif name == "SessionStart" and semantic_enabled(_root(event)):
             warm_in_background(_root(event))
     except Exception:  # noqa: BLE001 — a memory hook must never fail the session
         pass

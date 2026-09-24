@@ -14,7 +14,9 @@ embeddinggemma`). Without it, recall uses the lexical gate alone.
   • vectors cached on disk, one small file per (model, text) hash, so a memory is
     embedded once and every later prompt costs one query embedding (~65 ms)
   • hard time budget: if Ollama is down, slow, or the model is missing, callers
-    get None and fall back to the lexical gate — recall never blocks a prompt
+    get None and fall back to the lexical gate — recall never blocks a prompt.
+    After a failure, prompts skip Ollama for BACKOFF_SECONDS while a detached
+    request loads the model (kept resident for KEEP_ALIVE)
 """
 
 from __future__ import annotations
@@ -23,6 +25,8 @@ import hashlib
 import json
 import math
 import os
+import subprocess
+import sys
 import time
 import urllib.request
 from array import array
@@ -34,6 +38,23 @@ DEFAULT_URL = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 # embeddinggemma is trained with these task prefixes; they widen the gap between
 # related and unrelated pairs (measured: related 0.65-0.72, unrelated <= 0.35).
 QUERY_PREFIX = "task: search result | query: "
+
+# Keep the model resident between prompts (Ollama's default unloads it after 5
+# idle minutes, and a cold load takes 10-20 s — far beyond a prompt's budget).
+KEEP_ALIVE = os.environ.get("MEMO_EMBED_KEEP_ALIVE", "30m")
+# After a failed call, skip Ollama for this long (prompts use the word gate at once
+# instead of each paying the timeout) while a detached request loads the model.
+BACKOFF_SECONDS = 60
+
+_PRELOAD = """
+import json, sys, urllib.request
+req = urllib.request.Request(sys.argv[1] + "/api/embed", headers={"Content-Type": "application/json"},
+    data=json.dumps({"model": sys.argv[2], "input": ["load"], "keep_alive": sys.argv[3]}).encode())
+try:
+    urllib.request.urlopen(req, timeout=180).read()
+except Exception:
+    pass
+"""
 
 
 def doc_text(title: str, body: str) -> str:
@@ -58,7 +79,7 @@ class Embedder:
         cache_dir: Path,
         model: str = DEFAULT_MODEL,
         url: str = DEFAULT_URL,
-        timeout: float = 1.5,
+        timeout: float = 1.0,
         max_new: int = 6,
     ):
         self.model = model
@@ -69,6 +90,7 @@ class Embedder:
         self.max_new = max_new  # uncached texts embedded per prompt
         self.dir = Path(cache_dir) / model.replace(":", "_").replace("/", "_")
         self.dead = False  # set after a failed call: skip Ollama for this process
+        self._marker = self.dir.parent / ".unavailable"
 
     # ── cache ───────────────────────────────────────────────────────────────
     def _key(self, text: str) -> Path:
@@ -94,10 +116,36 @@ class Embedder:
             pass
 
     # ── service ─────────────────────────────────────────────────────────────
-    def _embed(self, texts: list[str], timeout: float) -> list[array] | None:
+    def _backing_off(self) -> bool:
+        try:
+            return time.time() - self._marker.stat().st_mtime < BACKOFF_SECONDS
+        except OSError:
+            return False
+
+    def _fail(self) -> None:
+        """Mark the service unavailable for BACKOFF_SECONDS and start loading the
+        model in a detached process, so a later prompt finds it resident."""
+        self.dead = True
+        try:
+            self._marker.parent.mkdir(parents=True, exist_ok=True)
+            self._marker.touch()
+            subprocess.Popen(
+                [sys.executable, "-c", _PRELOAD, self.url, self.model, KEEP_ALIVE],
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL, start_new_session=True,
+            )
+        except OSError:
+            pass
+
+    def _embed(self, texts: list[str], timeout: float, probe: bool = True) -> list[array] | None:
+        """probe=False: a best-effort call inside an already-working prompt (e.g.
+        new documents that may not fit the budget) — its timeout says nothing about
+        the service, so it never triggers the backoff."""
         if self.dead or not texts or timeout <= 0:
             return None
-        body = json.dumps({"model": self.model, "input": texts}).encode()
+        body = json.dumps(
+            {"model": self.model, "input": texts, "keep_alive": KEEP_ALIVE}
+        ).encode()
         req = urllib.request.Request(
             f"{self.url}/api/embed", data=body, headers={"Content-Type": "application/json"}
         )
@@ -105,7 +153,8 @@ class Embedder:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 vecs = json.loads(resp.read())["embeddings"]
         except Exception:  # noqa: BLE001 — any failure means "no semantic signal"
-            self.dead = True
+            if probe:
+                self._fail()
             return None
         return [_unit(v) for v in vecs]
 
@@ -113,6 +162,8 @@ class Embedder:
         """{doc_id: cosine} for every doc whose vector is cached or could be made
         within budget; None if the prompt itself could not be embedded. Docs that
         missed the budget are simply absent — callers treat them as unknown."""
+        if self._backing_off():
+            return None  # a recent call failed; the model is being loaded meanwhile
         start = time.monotonic()
         q = self._embed([QUERY_PREFIX + prompt], self.timeout)
         if not q:
@@ -127,7 +178,7 @@ class Embedder:
                 missing.append((did, text))
         batch = missing[: self.max_new]
         left = self.timeout - (time.monotonic() - start)
-        vecs = self._embed([t for _, t in batch], left) if batch else None
+        vecs = self._embed([t for _, t in batch], left, probe=False) if batch else None
         for (did, text), v in zip(batch, vecs or []):
             self._save(text, v)
             out[did] = _dot(qv, v)

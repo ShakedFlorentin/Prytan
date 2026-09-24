@@ -52,6 +52,10 @@ DEFAULTS = {
         "monthly_milestone": "07:00",
     },
     "books": {},   # role -> [book names] the role consults; empty by default
+    # Prompt-time memory recall. semantic: true lets a local Ollama embedding model
+    # decide which word-matched memories are really about the prompt (see README).
+    # Off by default: no local service is contacted unless the user opts in.
+    "memory": {"semantic": False},
 }
 
 
@@ -95,6 +99,7 @@ class Config:
     codegrapher: dict
     schedule: dict
     books: dict
+    memory: dict = dataclasses.field(default_factory=lambda: {"semantic": False})
 
     @classmethod
     def load(cls, path: str | Path) -> "Config":

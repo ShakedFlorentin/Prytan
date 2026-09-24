@@ -125,9 +125,21 @@ def _conversations(root: Path, exclude_session: str) -> list[Candidate]:
 EMBED_CACHE = ".agent-runtime/embeddings"
 
 
+def semantic_enabled(root: str | Path) -> bool:
+    """True only when the project opted in: `memory: {semantic: true}` in
+    config.yaml. Any problem reading the config means off."""
+    try:
+        from core.config import Config
+
+        return bool(Config.load(Path(root) / "config.yaml").memory.get("semantic"))
+    except Exception:  # noqa: BLE001 — unreadable config: stay on the word gate
+        return False
+
+
 def embedder(root: str | Path, timeout: float = 1.5, max_new: int = 6):
-    """The optional semantic checker (a local Ollama embedding model), cached under
-    .agent-runtime/. If Ollama or the model is missing, recall uses words alone."""
+    """The semantic checker (a local Ollama embedding model), cached under
+    .agent-runtime/. Callers use it only when semantic_enabled(); if Ollama or the
+    model is missing even then, recall uses words alone."""
     from core.knowledge.semantic import Embedder
 
     return Embedder(Path(root) / EMBED_CACHE, timeout=timeout, max_new=max_new)

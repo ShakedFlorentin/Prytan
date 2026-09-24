@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ShakedFlorentin/Prytan/releases"><img src="https://img.shields.io/badge/version-2.0.0-gold" alt="Version 2.0.0"></a>
+  <a href="https://github.com/ShakedFlorentin/Prytan/releases"><img src="https://img.shields.io/badge/version-2.0.1-gold" alt="Version 2.0.1"></a>
   <a href="https://github.com/ShakedFlorentin/Prytan"><img src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet" alt="Claude Code Plugin"></a>
   <a href="agents/_base/"><img src="https://img.shields.io/badge/agents-16-4f8ef7" alt="16 agents"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
@@ -62,13 +62,24 @@ On every prompt, Prytan checks whether anything the org remembers is actually ab
 you asked — and injects at most three memories, each with the line that states the fact.
 Most prompts get nothing.
 
-- **Words propose, meaning decides.** Candidates come from `memory/`, the comm dirs,
-  per-agent logs and saved turns, matched per paragraph (not per file). If a local
-  [Ollama](https://ollama.com) embedding model is available, it decides which candidates
-  are really about the prompt; otherwise a strict word gate does.
-- **Optional semantic check:** `ollama pull embeddinggemma`, then
-  `python3 -m core.knowledge.memory warm`. Vectors are cached locally; recall falls back to
-  words whenever Ollama is unavailable.
+- **Words find candidates, per paragraph.** Candidates come from `memory/`, the comm
+  dirs, per-agent logs and saved turns, matched paragraph by paragraph (not per file),
+  and a strict word gate decides what gets injected. That's the default, and it works
+  well at typical project sizes.
+- **Optional semantic check (opt-in).** For large, long-lived memory stores, a local
+  [Ollama](https://ollama.com) embedding model can decide instead — it tells a memory
+  that is *about* the prompt from one that merely shares words with it. It is off by
+  default, and Prytan contacts no local service unless you enable it:
+  ```bash
+  ollama pull embeddinggemma
+  ```
+  ```yaml
+  # config.yaml
+  memory:
+    semantic: true
+  ```
+  then `python3 -m core.knowledge.memory warm` (sessions also warm new memories in the
+  background). Recall falls back to the word gate whenever Ollama is unavailable.
 - **Measure, don't guess:** `python3 -m core.knowledge.memory eval labels.jsonl` scores
   recall against labeled prompts (`{"prompt": …, "expect": [path substrings]}`; an empty
   `expect` means "inject nothing").
@@ -79,7 +90,7 @@ Most prompts get nothing.
 
 - [Claude Code](https://claude.com/claude-code)
 - Python 3.11+
-- Optional: Ollama with an embedding model, for semantic recall
+- Optional: Ollama with an embedding model, for opt-in semantic recall
 - Optional: a Telegram bot (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`) to talk to Atlas
   from your phone — `python -m core.runtime.telegram_main`
 

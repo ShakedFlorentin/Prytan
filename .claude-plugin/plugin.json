@@ -1,6 +1,6 @@
 {
   "name": "prytan",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An AI agent organization for any project: a chief of staff (Atlas) who dispatches a specialist team, with codegrapher + persistent memory. Run /org-init to set it up.",
   "commands": "./commands",
   "agents": "./agents/_base",

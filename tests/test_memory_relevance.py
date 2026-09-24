@@ -180,6 +180,24 @@ def test_semantic_finds_memory_with_no_shared_words():
     assert [c.id for _, c, _ in picks] == ["m"]
 
 
+def test_embedder_backs_off_after_failure_but_not_on_document_budget(tmp_path, monkeypatch):
+    import time
+    from array import array
+
+    from core.knowledge.semantic import Embedder
+
+    down = Embedder(tmp_path / "emb", url="http://127.0.0.1:9", timeout=0.5)
+    assert down.similarity("q", {"a": "t"}) is None
+    again = Embedder(tmp_path / "emb", url="http://127.0.0.1:9", timeout=0.5)
+    start = time.monotonic()
+    assert again.similarity("q", {"a": "t"}) is None and time.monotonic() - start < 0.05
+
+    ok = Embedder(tmp_path / "emb2")
+    monkeypatch.setattr(ok, "_embed", lambda texts, timeout, probe=True:
+                        [array("f", [1.0, 0.0])] if probe else None)
+    assert ok.similarity("q", {"a": "new text"}) == {} and not ok._backing_off()
+
+
 def test_embedder_unreachable_is_fast_and_warm_cli_reports_it(tmp_path):
     import time
 
@@ -193,6 +211,59 @@ def test_embedder_unreachable_is_fast_and_warm_cli_reports_it(tmp_path):
                           str(tmp_path)], text=True, capture_output=True, cwd=REPO,
                          env={"PATH": "/usr/bin:/bin", "OLLAMA_HOST": "http://127.0.0.1:9"})
     assert out.returncode == 0 and "service unavailable" in out.stdout
+
+
+def _no_embedder(*a, **k):
+    raise AssertionError("semantic recall must not run unless the project opts in")
+
+
+def test_semantic_recall_is_off_by_default(tmp_path, monkeypatch):
+    from core.knowledge.memory import sources
+
+    add_memory(tmp_path, "Auth uses Argon2", "hashing choice", "argon2id with 64MB memory cost")
+    assert sources.semantic_enabled(tmp_path) is False  # no config.yaml at all
+    (tmp_path / "config.yaml").write_text("project_name: x\n")
+    assert sources.semantic_enabled(tmp_path) is False  # config without the key
+    monkeypatch.setattr(hook, "embedder", _no_embedder)
+    assert "auth-uses-argon2" in hook.recall_block(tmp_path, "what argon2id memory cost")
+
+
+def test_semantic_recall_opt_in_uses_the_embedder(tmp_path, monkeypatch):
+    from core.knowledge.memory import sources
+
+    (tmp_path / "config.yaml").write_text("memory:\n  semantic: true\n")
+    assert sources.semantic_enabled(tmp_path) is True
+    used = []
+
+    class _Emb:
+        def similarity(self, prompt, docs):
+            used.append(prompt)
+            return None  # service down → words decide
+
+    monkeypatch.setattr(hook, "embedder", lambda root: _Emb())
+    add_memory(tmp_path, "Auth uses Argon2", "hashing choice", "argon2id with 64MB memory cost")
+    hook.recall_block(tmp_path, "what argon2id memory cost")
+    assert used == ["what argon2id memory cost"]
+
+
+def test_session_start_warms_only_when_opted_in(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(hook, "warm_in_background", lambda root: calls.append(root))
+    monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
+    monkeypatch.setattr("sys.stdin", __import__("io").StringIO('{"hook_event_name":"SessionStart"}'))
+    hook.main()
+    assert calls == []
+    (tmp_path / "config.yaml").write_text("memory:\n  semantic: true\n")
+    monkeypatch.setattr("sys.stdin", __import__("io").StringIO('{"hook_event_name":"SessionStart"}'))
+    hook.main()
+    assert calls == [tmp_path]
+
+
+def test_new_project_config_shows_the_switch_off(tmp_path):
+    from core import onboarding as ob
+
+    ob.config_set(tmp_path, "project_name", "x")
+    assert "semantic: false" in (tmp_path / "config.yaml").read_text()
 
 
 # ── sources ─────────────────────────────────────────────────────────────────

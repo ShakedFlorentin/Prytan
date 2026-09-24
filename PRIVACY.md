@@ -36,7 +36,7 @@ that data: https://www.anthropic.com/privacy
 
 ## Local embeddings (optional)
 
-If you enable semantic recall, memory text and prompts are sent to the Ollama server you
+If you opt in to semantic recall (`memory: {semantic: true}` in `config.yaml`), memory text and prompts are sent to the Ollama server you
 configure (by default `http://localhost:11434`, on your own machine). Prytan never sends
 them anywhere else.
 

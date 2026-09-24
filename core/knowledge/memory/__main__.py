@@ -1,4 +1,4 @@
-"""`python3 -m core.knowledge.memory eval LABELS.jsonl [--root DIR] [-n 3] [-v] [--lexical]`
+"""`python3 -m core.knowledge.memory eval LABELS.jsonl [--root DIR] [-n 3] [-v] [--semantic|--lexical]`
 `python3 -m core.knowledge.memory warm [--root DIR]`   (pre-embed memory/ files)
 
 Scores prompt-time recall against labeled prompts, one JSON object per line:
@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from core.knowledge.memory.sources import TIER_MEMORY, embedder, gather
+from core.knowledge.memory.sources import TIER_MEMORY, embedder, gather, semantic_enabled
 from core.knowledge.relevance import embed_text, evaluate
 
 
@@ -24,7 +24,9 @@ def main(argv: list[str]) -> int:
     ev.add_argument("--root", default=".")
     ev.add_argument("-n", type=int, default=3)
     ev.add_argument("-v", "--verbose", action="store_true")
-    ev.add_argument("--lexical", action="store_true", help="word gate only, no embeddings")
+    mode = ev.add_mutually_exclusive_group()
+    mode.add_argument("--semantic", action="store_true", help="force the embedding check on")
+    mode.add_argument("--lexical", action="store_true", help="force the word gate only")
     wm = sub.add_parser("warm", help="pre-embed memory files for semantic recall")
     wm.add_argument("--root", default=".")
     args = ap.parse_args(argv)
@@ -35,10 +37,14 @@ def main(argv: list[str]) -> int:
         added = emb.warm(texts)
         state = "unavailable" if emb.dead else "ok"
         print(f"warm: {added} new embeddings, {len(texts)} memories, service {state}")
+        if not semantic_enabled(args.root):
+            print("note: semantic recall is off for this project — set `memory: {semantic: true}`"
+                  " in config.yaml to use these embeddings")
         return 0
 
     labels = [json.loads(x) for x in Path(args.labels).read_text().splitlines() if x.strip()]
-    emb = None if args.lexical else embedder(args.root, timeout=30, max_new=64)
+    use = args.semantic or (not args.lexical and semantic_enabled(args.root))
+    emb = embedder(args.root, timeout=30, max_new=64) if use else None
     pool = [c for c in gather(args.root) if c.source != "conversation"]
     res = evaluate(labels, pool, n=args.n, embedder=emb)
     if args.verbose:
