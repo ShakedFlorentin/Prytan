@@ -370,7 +370,7 @@ def _family(c: Candidate) -> str:
 # bar; a candidate that ALSO passes the strict word gate needs less.
 SEM_K = 12  # lexical candidates sent to the semantic check
 SEM_WITH_WORDS = 0.40  # cosine needed when the strict word gate also passes
-SEM_ALONE = 0.50  # cosine needed on meaning alone (loose or no word overlap)
+SEM_ALONE = 0.55  # cosine needed on meaning alone (loose or no word overlap)
 WORDS_BONUS = 0.10  # ranking bonus for also passing the strict word gate
 DOC_CHARS = 1200  # curated memories are embedded whole (up to this)
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+**Changed**
+- Semantic recall's meaning-only bar is back to 0.55 cosine (from 0.50). At 0.50 a
+  real operational prompt ("fix the tests lint warnings too") pulled in unrelated
+  memories at 0.50-0.52. Trade-off: a paraphrase with no shared words now needs a
+  closer match to be recalled.
+
 ## 2.0.1 — 2026-09-24
 
 **Changed**
