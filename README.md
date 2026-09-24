@@ -36,6 +36,19 @@ session.
 `/org-init` analyzes the repository and configures the org non-destructively: source
 dirs, the agent roster, any domain agents the project needs, the code graph and memory.
 
+### Updating
+
+```text
+/plugin marketplace update prytan
+```
+
+then `/reload-plugins` (or start a new session). Claude Code tracks this marketplace's
+`main` branch and detects new releases automatically — there's no version string to bump
+or track yourself. To update in the background without asking, enable auto-update for
+this marketplace under `/plugin` → Marketplaces. `/org-init` is safe to re-run after an
+update: it never overwrites an agent your project already has (see
+[CHANGELOG.md](CHANGELOG.md) for what changed release to release).
+
 For the terminal and scheduler entry points, install the Python package too:
 
 ```bash
