@@ -5,7 +5,8 @@ def test_run_loop_relays_until_blank_line():
     cfg = Config.load("/nonexistent")
     inputs = iter(["hello", ""])
     written = []
-    adapter_inputs = lambda _p="": next(inputs)
+    def adapter_inputs(_p=""):
+        return next(inputs)
     # fake orchestrator: echo uppercased
     class FakeOrch:
         def handle(self, msg): return msg.upper()

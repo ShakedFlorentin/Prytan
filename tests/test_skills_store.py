@@ -25,7 +25,6 @@ def test_load_lessons_empty_when_missing(tmp_path):
 # I3 regression: non-list JSON must not crash add_lesson; must recover gracefully
 def test_add_lesson_recovers_from_non_list_json(tmp_path):
     import json
-    from pathlib import Path
     skills_file = tmp_path / SKILLS_FILE
     skills_file.parent.mkdir(parents=True, exist_ok=True)
     skills_file.write_text(json.dumps({"x": 1}))

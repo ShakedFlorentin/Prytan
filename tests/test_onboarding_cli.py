@@ -1,4 +1,3 @@
-import json
 from core.onboarding_cli import main
 
 def test_cli_scan_and_author(tmp_path, monkeypatch):
@@ -19,7 +18,8 @@ def test_cli_unknown_returns_error(tmp_path, monkeypatch):
 
 
 def test_cli_author_agent_from_stdin(tmp_path, monkeypatch):
-    import io, sys
+    import io
+    import sys
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(sys, "stdin", io.StringIO("You review RTL designs."))
     assert main(["author-agent", "rtl", "Rtl", "RTL specialist"]) == 0

@@ -3,7 +3,9 @@ from core.runtime.agent_runner import run_agent
 from core.runtime.agent_runner import run_agent_metered, AgentResult
 
 class _FakeCompleted:
-    def __init__(self, stdout): self.stdout = stdout; self.returncode = 0
+    def __init__(self, stdout):
+        self.stdout = stdout
+        self.returncode = 0
 
 def test_run_agent_builds_command_and_returns_text():
     captured = {}
@@ -24,7 +26,9 @@ def test_run_agent_falls_back_to_raw_stdout_when_not_json():
 
 
 class _FakeProc:
-    def __init__(self, stdout): self.stdout = stdout; self.returncode = 0
+    def __init__(self, stdout):
+        self.stdout = stdout
+        self.returncode = 0
 
 def test_run_agent_metered_returns_text_and_usage():
     import json as _j

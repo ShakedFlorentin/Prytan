@@ -43,7 +43,7 @@ def test_schedule_is_user_overridable(tmp_path):
 
 # C1 regression: _deep_merge must deep-copy nested dicts so configs are independent
 def test_agents_dicts_are_independent_across_loads(tmp_path):
-    from core.config import Config, DEFAULTS
+    from core.config import Config
     p1 = tmp_path / "c1.yaml"
     p2 = tmp_path / "c2.yaml"
     p1.write_text("")

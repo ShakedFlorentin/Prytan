@@ -4,9 +4,11 @@ from core.knowledge.codegrapher.query import query_graph
 
 
 def _mk(tmp_path):
-    src = tmp_path / "src"; src.mkdir()
+    src = tmp_path / "src"
+    src.mkdir()
     (src / "m.py").write_text("def sanitize_input(x):\n    return x\n")
-    books = tmp_path / "books" / "engineering"; books.mkdir(parents=True)
+    books = tmp_path / "books" / "engineering"
+    books.mkdir(parents=True)
     (books / "iv.md").write_text(
         "---\ntitle: Input Validation\nchapter: security\n"
         "explains:\n  - sanitize_input\n---\nValidate at the boundary.\n")

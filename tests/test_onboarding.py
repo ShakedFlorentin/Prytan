@@ -9,7 +9,9 @@ def test_config_set_creates_and_nests(tmp_path):
     assert data["codegrapher"]["source_dir"] == "lib"
 
 def test_scan_multiple_dirs_merges_and_excludes_others(tmp_path):
-    (tmp_path / "lib").mkdir(); (tmp_path / "app").mkdir(); (tmp_path / "tests").mkdir()
+    (tmp_path / "lib").mkdir()
+    (tmp_path / "app").mkdir()
+    (tmp_path / "tests").mkdir()
     (tmp_path / "lib" / "a.py").write_text("def la():\n    return 1\n")
     (tmp_path / "app" / "b.py").write_text("def ab():\n    return 2\n")
     (tmp_path / "tests" / "t.py").write_text("def tt():\n    return 3\n")
@@ -20,7 +22,8 @@ def test_scan_multiple_dirs_merges_and_excludes_others(tmp_path):
 
 def test_install_agent_is_non_destructive(tmp_path):
     # a project that already owns a backend agent
-    d = tmp_path / ".claude" / "agents"; d.mkdir(parents=True)
+    d = tmp_path / ".claude" / "agents"
+    d.mkdir(parents=True)
     (d / "backend.md").write_text("MINE")
     install_agent(tmp_path, "backend")            # must NOT clobber
     assert (d / "backend.md").read_text() == "MINE"
