@@ -55,6 +55,7 @@ org-schedule nightly      # the nightly reflection run (see scripts/cron-install
 | `core/knowledge/memory/` | Shared `memory/` facts plus prompt-time recall (below) |
 | `core/protocol/` | Comm dirs agents coordinate through: `.inbox/`, `.handoffs/`, `.proposals/`, `.logs/` |
 | `skills/org-onboarding/` | The skill behind `/org-init` |
+| `skills/circle-meeting/` | Ad hoc multi-agent design review — name 2+ agents and a topic mid-conversation |
 
 ### Memory that only speaks when it's relevant
 
