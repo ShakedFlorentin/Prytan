@@ -2,33 +2,36 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Prytan, please **do not open a public GitHub issue**.
+If you discover a security vulnerability in Prytan, please **do not open a public GitHub
+issue**. Report it privately via
+[GitHub's private vulnerability reporting](https://github.com/ShakedFlorentin/Prytan/security/advisories/new).
 
-Report it privately via [GitHub's private vulnerability reporting](https://github.com/ShakedFlorentin/Prytan/security/advisories/new).
-
-Include:
-- A description of the vulnerability
-- Steps to reproduce
-- Potential impact
-
-You can expect an acknowledgement within 48 hours and a fix or mitigation plan within 7 days for confirmed vulnerabilities.
+Include a description, steps to reproduce, and the potential impact. You can expect an
+acknowledgement within 48 hours and a fix or mitigation plan within 7 days for confirmed
+vulnerabilities.
 
 ## Scope
 
-Security reports are in scope for:
-- The agent scaffolding files (`.claude/agents/`, `.claude/hooks/`, `scripts/`)
-- The `codegrapher` knowledge graph engine
-- The Telegram bot interface (`scripts/telegram-bot.py`)
-- The safety layer (`escalation_guard.py`, `claim_guard.py`, `write_proposals.py`)
+In scope:
+- Agent charters and the plugin manifest (`agents/`, `.claude-plugin/`, `hooks/`)
+- The runtime (`core/runtime/`), including per-dispatch permissions (`perms.py`) and the
+  Telegram adapter
+- The knowledge layer (`core/knowledge/`): codegrapher, memory recall, the conversation
+  store and its secret redaction
 
-Out of scope: vulnerabilities in Claude Code or the Anthropic API itself — report those directly to [Anthropic](https://www.anthropic.com/security).
+Out of scope: vulnerabilities in Claude Code, the Anthropic API, Ollama or Telegram
+themselves — report those to their maintainers.
 
 ## Security Model
 
-Prytan is designed to run **fully locally**. It does not send telemetry, does not contact external servers (except the Anthropic API via Claude Code), and does not store credentials.
+Prytan runs **fully locally** and sends no telemetry.
 
-- Agent decisions that are irreversible (`one_way`, `strategic_fork`) require explicit human approval before execution.
-- File writes to source directories require a human-gated proposal (`write_proposals.py`).
-- The budget governor (`cost_governor.py`) halts all agent runs if the monthly token cap is exceeded.
+- Each agent dispatch gets a generated allow-list of the directories it may write to
+  (its own log dir and `memory/`, plus deliverable dirs for write dispatches); the
+  permission file itself lives outside every write-allowed dir.
+- Saved conversation turns are capped and pass through secret redaction (private keys,
+  URL credentials, JWTs, vendor tokens, random-looking blobs, `KEY=value`) before they
+  are written, and the store is gitignored.
+- Memory hooks never block a session: any error exits silently.
 
-See [PRIVACY.md](PRIVACY.md) for the full data flow description.
+See [PRIVACY.md](PRIVACY.md) for the full data-flow description.

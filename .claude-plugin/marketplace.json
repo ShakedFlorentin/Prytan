@@ -1,0 +1,13 @@
+{
+  "name": "prytan",
+  "owner": {
+    "name": "Shaked Florentin"
+  },
+  "plugins": [
+    {
+      "name": "prytan",
+      "source": ".",
+      "description": "An AI agent organization for any project — Atlas (chief of staff) dispatches a specialist team, with codegrapher + persistent memory. Run /org-init to set it up."
+    }
+  ]
+}
