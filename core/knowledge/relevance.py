@@ -40,6 +40,16 @@ TITLE_BONUS = 0.3
 # cover UNCURATED_COVERAGE of the prompt to pass.
 UNCURATED_TIER = 2
 UNCURATED_COVERAGE = 0.75
+# Trust boundary for verbatim quoting (see best_line/render): only candidates
+# below this tier are quoted into context. Everything at or above it — handoffs,
+# per-agent logs, saved conversation turns, chatter — can carry text Prytan did
+# not author itself (an agent's summary of external content, a user's pasted
+# text saved by the Stop hook). Injecting that text verbatim into a LATER
+# prompt's context is a stored/indirect prompt-injection vector: a memory hook
+# must never re-quote text it does not control. Those candidates still surface
+# via the header line (source, title, path, matched words) so a human or agent
+# can open the file deliberately; only the auto-quoted line is withheld.
+RAW_QUOTE_TIER = UNCURATED_TIER
 # Long prompts carry incidental words, so the coverage bar drops by LONG_STEP per
 # content word beyond LONG_FROM, never below LONG_FLOOR.
 LONG_FROM = 5
@@ -454,7 +464,13 @@ def _select_lexical(prompt: str, pool: list[Candidate], n: int):
 def best_line(c: Candidate, matched: list[str], width: int = 180) -> str:
     """The line of the memory that carries most of the matched words (or, for a
     meaning-only pick, its first body line) — the fact itself, so the reader
-    rarely has to open the file."""
+    rarely has to open the file.
+
+    Callers MUST gate this on c.tier < RAW_QUOTE_TIER (render() does). Below
+    that tier text is curated memory Prytan wrote deliberately; at or above it,
+    the text may be an agent's summary of external content or a user's pasted
+    text, and quoting it verbatim into a later prompt's context would re-inject
+    whatever it contains, including embedded instructions."""
     pats = [_pattern(t) for t in matched]
     best, best_hits, first = "", 0, ""
     for line in _FRONTMATTER.sub("", c.text, count=1).splitlines():
@@ -502,7 +518,13 @@ def evaluate(labels: list[dict], pool: list[Candidate], n: int = 3, embedder=Non
 
 
 def render(hits: list[tuple[float, Candidate, list[str]]]) -> str:
-    """The context block the prompt hook injects ("" when nothing passed)."""
+    """The context block the prompt hook injects ("" when nothing passed).
+
+    Only curated memory (tier < RAW_QUOTE_TIER) gets its fact-line quoted
+    verbatim; uncurated hits (handoffs, logs, conversations, chatter) surface
+    as a reference only — source, title, path, matched words — never a raw
+    quote, since that text can carry content Prytan did not author (see
+    RAW_QUOTE_TIER and best_line)."""
     if not hits:
         return ""
     lines = [f"## Remembered context (top {len(hits)}, relevance-gated)"]
@@ -511,7 +533,7 @@ def render(hits: list[tuple[float, Candidate, list[str]]]) -> str:
         where = f" — {c.path}" if c.path else ""
         words = f": {', '.join(matched[:5])}" if matched else ""
         lines.append(f"- [{c.source}{who}] {c.title}{where}  (relevance {cov:.2f}{words})")
-        line = best_line(c, matched)
+        line = best_line(c, matched) if c.tier < RAW_QUOTE_TIER else ""
         if line:
             lines.append(f"    > {line}")
     return "\n".join(lines)

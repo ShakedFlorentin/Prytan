@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """Memory hooks for Claude Code (wired in hooks/hooks.json).
 
-  • UserPromptSubmit → inject memories relevant to the prompt, each with the
-    line that carries the fact. Words propose candidates (per passage, not per
-    file) and a strict word gate decides; projects that opt in
+  • UserPromptSubmit → inject memories relevant to the prompt. A curated
+    memory/ hit is quoted with the line that carries the fact; a hit from an
+    uncurated source (comm dirs, per-agent logs, saved turns) is surfaced by
+    reference only (source, title, path, matched words) — never a verbatim
+    quote, since that text can carry content Prytan did not author (an
+    agent's summary of external content, a user's pasted text) and quoting it
+    into a later prompt would re-inject whatever it contains (see
+    RAW_QUOTE_TIER in relevance.py). Words propose candidates (per passage,
+    not per file) and a strict word gate decides; projects that opt in
     (memory.semantic: true) let a local embedding model decide instead
     (core/knowledge/relevance.py, semantic.py). Usually nothing is printed.
     Candidates: memory/, the comm dirs, per-agent logs and saved turns
