@@ -54,7 +54,8 @@ def scan_sources(cwd, dirs: list[str], books_dir=None) -> Path:
     for e in edges:
         k = (e["src"], e["dst"], e["kind"])
         if k not in seen:
-            seen.add(k); deduped.append(e)
+            seen.add(k)
+            deduped.append(e)
     out = cwd / GRAPH_OUT
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"nodes": list(nodes.values()), "edges": deduped}, indent=2))

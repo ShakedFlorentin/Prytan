@@ -13,7 +13,8 @@ def main(argv: list[str]) -> int:
     cwd = Path.cwd()
     if cmd == "scan":
         if not rest:
-            print("scan: need at least one dir", file=sys.stderr); return 2
+            print("scan: need at least one dir", file=sys.stderr)
+            return 2
         # Pull optional --books <dir> from the argument list
         books_dir = None
         filtered_rest = []
@@ -26,7 +27,8 @@ def main(argv: list[str]) -> int:
                 filtered_rest.append(rest[i])
                 i += 1
         if not filtered_rest:
-            print("scan: need at least one source dir", file=sys.stderr); return 2
+            print("scan: need at least one source dir", file=sys.stderr)
+            return 2
         out = ob.scan_sources(cwd, filtered_rest, books_dir=books_dir)
         print(f"scanned {filtered_rest} -> {out}")
         return 0
@@ -37,7 +39,8 @@ def main(argv: list[str]) -> int:
         return 0
     if cmd == "config-set":
         if len(rest) != 2:
-            print("config-set: need KEY VALUE", file=sys.stderr); return 2
+            print("config-set: need KEY VALUE", file=sys.stderr)
+            return 2
         ob.config_set(cwd, rest[0], rest[1])
         print(f"set {rest[0]} = {rest[1]}")
         return 0
